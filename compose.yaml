@@ -14,7 +14,7 @@
 # - OCI labels для metadata
 #
 # Usage:
-#   cd /opt/projects/repositories/cisco-secure-client-docs
+#   cd /opt/projects/repositories/wolfguard-docs
 #   make deploy
 #   # или напрямую:
 #   podman-compose -f compose.yaml up -d
@@ -37,8 +37,8 @@
 
 # Общие OCI labels для всех сервисов
 x-common-labels: &common-labels
-  org.opencontainers.image.vendor: "OpenConnect Protocol Documentation"
-  org.opencontainers.image.source: "https://github.com/dantte-lp/cisco-secure-client-docs"
+  org.opencontainers.image.vendor: "WolfGuard Documentation"
+  org.opencontainers.image.source: "https://github.com/dantte-lp/wolfguard-docs"
   org.opencontainers.image.url: "https://docs.wolfguard.io"
   org.opencontainers.image.version: "${VERSION:-1.0.0}"
   org.opencontainers.image.created: "${BUILD_DATE:-2025-10-29}"
@@ -82,7 +82,7 @@ services:
         VERSION: "${VERSION:-1.0.0}"
         VCS_REF: "${VCS_REF:-HEAD}"
 
-    container_name: ocproto-docs
+    container_name: wolfguard-docs
     restart: unless-stopped
 
     # Security hardening
@@ -131,23 +131,23 @@ services:
       traefik.docker.network: "traefik-public"
 
       # HTTPS Router
-      traefik.http.routers.ocproto-docs.entrypoints: "https"
-      traefik.http.routers.ocproto-docs.rule: "Host(`docs.wolfguard.io`)"
-      traefik.http.routers.ocproto-docs.tls: "true"
-      traefik.http.routers.ocproto-docs.tls.certresolver: "cloudflare"
+      traefik.http.routers.wolfguard-docs.entrypoints: "https"
+      traefik.http.routers.wolfguard-docs.rule: "Host(`docs.wolfguard.io`)"
+      traefik.http.routers.wolfguard-docs.tls: "true"
+      traefik.http.routers.wolfguard-docs.tls.certresolver: "cloudflare"
 
       # Применить middleware chain из Traefik dynamic.yml
-      traefik.http.routers.ocproto-docs.middlewares: "web-standard@file"
+      traefik.http.routers.wolfguard-docs.middlewares: "web-standard@file"
       # web-standard включает: security-headers + compression + rate-limit-standard
 
       # Service Configuration
-      traefik.http.services.ocproto-docs.loadbalancer.server.port: "8080"
-      traefik.http.services.ocproto-docs.loadbalancer.server.scheme: "http"
+      traefik.http.services.wolfguard-docs.loadbalancer.server.port: "8080"
+      traefik.http.services.wolfguard-docs.loadbalancer.server.scheme: "http"
 
       # Healthcheck Configuration
-      traefik.http.services.ocproto-docs.loadbalancer.healthcheck.path: "/"
-      traefik.http.services.ocproto-docs.loadbalancer.healthcheck.interval: "30s"
-      traefik.http.services.ocproto-docs.loadbalancer.healthcheck.timeout: "5s"
+      traefik.http.services.wolfguard-docs.loadbalancer.healthcheck.path: "/"
+      traefik.http.services.wolfguard-docs.loadbalancer.healthcheck.interval: "30s"
+      traefik.http.services.wolfguard-docs.loadbalancer.healthcheck.timeout: "5s"
 
     # Healthcheck
     healthcheck:
@@ -162,7 +162,7 @@ services:
   # ═══════════════════════════════════════════════════════════════════
   kroki:
     image: docker.io/yuzutech/kroki:0.25.0
-    container_name: ocproto-kroki
+    container_name: wolfguard-kroki
     restart: unless-stopped
 
     # Security hardening
