@@ -45,11 +45,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
 # Remove default nginx files
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built site from builder stage
+# Copy built site from builder stage (includes Docusaurus-generated index.html)
 COPY --from=builder /app/build /usr/share/nginx/html
-
-# Copy root redirect index.html (client-side redirect to /docs/)
-COPY --from=builder /app/index.html /usr/share/nginx/html/index.html
 
 # Remove default nginx config and copy custom configuration
 RUN rm -f /etc/nginx/conf.d/default.conf

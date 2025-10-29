@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { Redirect } from '@docusaurus/router';
+import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
@@ -7,14 +6,6 @@ import styles from './index.module.css';
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
-
-  // Automatic redirect after 2 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.location.href = '/docs/';
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <Layout
@@ -70,10 +61,6 @@ export default function Home(): JSX.Element {
               </p>
             </div>
           </div>
-
-          <p className={styles.redirect}>
-            Redirecting to documentation in 2 seconds...
-          </p>
         </div>
       </main>
     </Layout>
