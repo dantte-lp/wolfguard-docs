@@ -1,0 +1,269 @@
+# ═══════════════════════════════════════════════════════════════════
+# OpenConnect Protocol Documentation - Production Deployment
+# Compose Specification 2025 (Modern, Production-Ready)
+# ═══════════════════════════════════════════════════════════════════
+# Domain: https://ocproto.infra4.dev
+# Technology: Docusaurus 3 + Nginx 1.29 + Kroki Diagrams
+#
+# Features:
+# - Traefik integration с автоматическим HTTPS (Cloudflare DNS)
+# - Kroki diagram service для PlantUML, Mermaid, GraphViz, etc.
+# - Resource limits для предотвращения OOM
+# - Security hardening (no-new-privileges, cap drop)
+# - Log rotation (10MB max, 3 files = 30MB total)
+# - OCI labels для metadata
+#
+# Usage:
+#   cd /opt/projects/repositories/cisco-secure-client-docs
+#   make deploy
+#   # или напрямую:
+#   podman-compose -f compose.yaml up -d
+#   podman-compose -f compose.yaml logs -f
+#   podman-compose -f compose.yaml down
+#
+# Best Practices 2025:
+#   ✅ Без version field (устарел)
+#   ✅ Resource limits
+#   ✅ Log rotation
+#   ✅ Security options
+#   ✅ OCI labels
+#   ✅ Healthchecks
+#   ✅ YAML anchors для DRY
+# ═══════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════
+# YAML Anchors - переиспользуемые конфигурации (DRY principle)
+# ═══════════════════════════════════════════════════════════════════
+
+# Общие OCI labels для всех сервисов
+x-common-labels: &common-labels
+  org.opencontainers.image.vendor: "OpenConnect Protocol Documentation"
+  org.opencontainers.image.source: "https://github.com/dantte-lp/cisco-secure-client-docs"
+  org.opencontainers.image.url: "https://ocproto.infra4.dev"
+  org.opencontainers.image.version: "${VERSION:-1.0.0}"
+  org.opencontainers.image.created: "${BUILD_DATE:-2025-10-29}"
+  com.ocproto.environment: "production"
+
+# Logging configuration с rotation
+x-common-logging: &common-logging
+  driver: k8s-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+    # Итого: 30MB max для логов (10MB × 3 файла)
+
+# Security defaults
+x-common-security: &common-security
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+# Healthcheck defaults
+x-healthcheck-defaults: &healthcheck-defaults
+  interval: 30s
+  timeout: 5s
+  retries: 3
+
+# ═══════════════════════════════════════════════════════════════════
+# Services
+# ═══════════════════════════════════════════════════════════════════
+
+services:
+  # ═══════════════════════════════════════════════════════════════════
+  # Documentation Website (Docusaurus + Nginx)
+  # ═══════════════════════════════════════════════════════════════════
+  app:
+    build:
+      context: .
+      dockerfile: Containerfile
+      args:
+        BUILD_DATE: "${BUILD_DATE:-2025-10-29T00:00:00Z}"
+        VERSION: "${VERSION:-1.0.0}"
+        VCS_REF: "${VCS_REF:-HEAD}"
+
+    container_name: ocproto-docs
+    restart: unless-stopped
+
+    # Security hardening
+    <<: *common-security
+    cap_add:
+      - SETUID  # Required for nginx worker processes to change user
+      - SETGID  # Required for nginx worker processes to change group
+      - CHOWN   # Required for nginx to change file ownership
+      - DAC_OVERRIDE  # Required for nginx to access files
+
+    # Resource limits (статический сайт легковесный)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+
+    # Log rotation для предотвращения заполнения диска
+    logging: *common-logging
+
+    # Networking
+    networks:
+      - traefik-public
+      - internal
+
+    # Dependencies
+    depends_on:
+      kroki:
+        condition: service_healthy
+
+    # Labels
+    labels:
+      # OCI Labels
+      <<: *common-labels
+      org.opencontainers.image.title: "OpenConnect Protocol Documentation"
+      org.opencontainers.image.description: "Static documentation site (Docusaurus 3 + Nginx + Kroki)"
+      com.ocproto.service: "documentation"
+
+      # ═══════════════════════════════════════════
+      # Traefik Configuration
+      # ═══════════════════════════════════════════
+      traefik.enable: "true"
+      traefik.docker.network: "traefik-public"
+
+      # HTTPS Router
+      traefik.http.routers.ocproto-docs.entrypoints: "https"
+      traefik.http.routers.ocproto-docs.rule: "Host(`ocproto.infra4.dev`)"
+      traefik.http.routers.ocproto-docs.tls: "true"
+      traefik.http.routers.ocproto-docs.tls.certresolver: "cloudflare"
+
+      # Применить middleware chain из Traefik dynamic.yml
+      traefik.http.routers.ocproto-docs.middlewares: "web-standard@file"
+      # web-standard включает: security-headers + compression + rate-limit-standard
+
+      # Service Configuration
+      traefik.http.services.ocproto-docs.loadbalancer.server.port: "8080"
+      traefik.http.services.ocproto-docs.loadbalancer.server.scheme: "http"
+
+      # Healthcheck Configuration
+      traefik.http.services.ocproto-docs.loadbalancer.healthcheck.path: "/"
+      traefik.http.services.ocproto-docs.loadbalancer.healthcheck.interval: "30s"
+      traefik.http.services.ocproto-docs.loadbalancer.healthcheck.timeout: "5s"
+
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      <<: *healthcheck-defaults
+      start_period: 10s
+
+  # ═══════════════════════════════════════════════════════════════════
+  # Kroki Diagram Service
+  # ═══════════════════════════════════════════════════════════════════
+  # Supports: PlantUML, Mermaid, GraphViz, Ditaa, Blockdiag, BPMN, etc.
+  # ═══════════════════════════════════════════════════════════════════
+  kroki:
+    image: docker.io/yuzutech/kroki:0.25.0
+    container_name: ocproto-kroki
+    restart: unless-stopped
+
+    # Security hardening
+    <<: *common-security
+    # Kroki не требует специальных capabilities
+
+    # Resource limits (diagram generation может быть CPU-intensive)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+    # Log rotation
+    logging: *common-logging
+
+    # Networking
+    networks:
+      - internal
+
+    # Expose port для локального доступа (Claude Code, testing)
+    # IMPORTANT: Порт 8000 доступен ТОЛЬКО с localhost
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    # Environment
+    environment:
+      # Kroki server configuration
+      KROKI_PORT: "8000"
+      KROKI_SAFE_MODE: "secure"
+      KROKI_MAX_URI_LENGTH: "8000"
+      # Enable diagram types
+      KROKI_PLANTUML_ENABLED: "true"
+      KROKI_MERMAID_ENABLED: "true"
+      KROKI_GRAPHVIZ_ENABLED: "true"
+      KROKI_DITAA_ENABLED: "true"
+      KROKI_BLOCKDIAG_ENABLED: "true"
+      KROKI_BPMN_ENABLED: "true"
+      KROKI_EXCALIDRAW_ENABLED: "true"
+
+    # Labels
+    labels:
+      <<: *common-labels
+      org.opencontainers.image.title: "Kroki Diagram Service"
+      org.opencontainers.image.description: "Universal diagram service (PlantUML, Mermaid, GraphViz, etc.)"
+      com.ocproto.service: "kroki"
+
+    # Healthcheck
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      <<: *healthcheck-defaults
+      start_period: 30s
+
+# ═══════════════════════════════════════════════════════════════════
+# Networks
+# ═══════════════════════════════════════════════════════════════════
+networks:
+  # External Traefik network (shared with all projects)
+  traefik-public:
+    external: true
+    name: traefik-public
+
+  # Internal network для app ↔ kroki communication
+  internal:
+    driver: bridge
+    internal: false  # Kroki needs internet для некоторых diagram types
+    labels:
+      com.ocproto.network.type: "internal"
+      com.ocproto.network.environment: "production"
+
+# ═══════════════════════════════════════════════════════════════════
+# Notes:
+# ═══════════════════════════════════════════════════════════════════
+# 1. Resource Limits:
+#    - App (Nginx): 128MB RAM (достаточно для static site)
+#    - Kroki: 512MB RAM (diagram generation может быть требовательным)
+#
+# 2. Security:
+#    - Все сервисы работают с no-new-privileges
+#    - Dropped ALL capabilities
+#    - Non-privileged ports (8080, 8000)
+#
+# 3. Logging:
+#    - k8s-file driver с rotation (max 10MB × 3 = 30MB per service)
+#    - Предотвращает заполнение диска логами
+#
+# 4. Networking:
+#    - app: traefik-public (для HTTPS access) + internal (для Kroki)
+#    - kroki: internal only + localhost port binding
+#    - Kroki доступен из app по http://kroki:8000
+#    - Kroki доступен локально по http://localhost:8000
+#
+# 5. Kroki Integration:
+#    - Docusaurus использует kroki через http://kroki:8000 (internal network)
+#    - Claude Code может использовать http://localhost:8000 для генерации
+#    - Supported formats: PlantUML, Mermaid, GraphViz, Ditaa, etc.
+#
+# 6. Healthchecks:
+#    - app: 10s start_period (nginx быстрый)
+#    - kroki: 30s start_period (Java application, медленный старт)
+# ═══════════════════════════════════════════════════════════════════

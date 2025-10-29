@@ -1,0 +1,40 @@
+# Node modules
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+build
+.docusaurus
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+!docs/**/*.md
+
+# Container files
+Dockerfile
+docker-compose.yml
+.dockerignore
+migrate-docs.sh
+
+# Misc
+.env
+.env.local
+.cache
