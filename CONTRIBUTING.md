@@ -1,111 +1,69 @@
-# Contributing to OpenConnect Protocol Documentation
+# Contributing to WolfGuard Documentation
 
-Thank you for your interest in contributing!
+Thank you for your interest in contributing to the WolfGuard project documentation!
 
-## How to Contribute
+## 📚 Documentation Structure
 
-### 1. Documentation Improvements
+The WolfGuard documentation is built with [Docusaurus 3](https://docusaurus.io/) and consists of several main sections:
 
-```bash
-# Fork and clone
-git clone https://github.com/YOUR_USERNAME/cisco-secure-client-docs.git
+- **WolfGuard** (`docs/wolfguard/`) - Modern OpenConnect server implementation  
+- **OpenConnect Protocol** (`docs/openconnect-protocol/`) - Protocol analysis and reverse engineering
+- **ocserv Vanilla** (`docs/ocserv-vanilla/`) - Original ocserv documentation
+- **Guides** (`docs/guides/`) - How-to guides and tutorials
+- **Releases** (`docs/releases/`) - Release notes and changelogs
 
-# Create branch
-git checkout -b docs/improve-section
+## 🚀 Quick Start
 
-# Make changes
-vim docs/path/to/file.md
+### Prerequisites
 
-# Test locally
-npm start
+- Node.js 22+ (LTS)
+- npm or yarn
+- Git
 
-# Commit and push
-git commit -m "docs: improve XYZ section"
-git push origin docs/improve-section
-```
+### Local Development
 
-### 2. Protocol Analysis
+1. Clone the repository:
+   \`\`\`bash
+   git clone https://github.com/dantte-lp/wolfguard-docs.git
+   cd wolfguard-docs
+   \`\`\`
 
-If you've reverse engineered additional protocol details:
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-1. Document your methodology
-2. Provide evidence (network traces, decompiled code)
-3. Follow our analysis format
-4. Submit PR with clear explanations
+3. Start the development server:
+   \`\`\`bash
+   npm start
+   \`\`\`
 
-### 3. Bug Reports
+4. Open http://localhost:3000 in your browser
 
-Use GitHub Issues with:
-- Clear description
-- Steps to reproduce
-- Expected vs actual behavior
-- Environment details
+## 🐛 Reporting Issues
 
-## Style Guide
+Found a typo, broken link, or technical error? Please [open an issue](https://github.com/dantte-lp/wolfguard-docs/issues).
 
-### Markdown
+## 🔧 Pull Request Process
 
-- Use ATX headers (`#`, `##`, `###`)
-- Code blocks with language tags
-- Maximum line length: 120 characters
-- One sentence per line (for git diffs)
+1. Fork the repository
+2. Create a branch for your changes
+3. Make your changes following the style guide
+4. Test locally: \`npm run build\`
+5. Commit with a descriptive message
+6. Push to your fork and open a Pull Request
 
-### Code Examples
+## 📝 Style Guide
 
-```bash
-# Good: Include comments
-make build  # Build the container image
+- Be clear and concise
+- Use active voice
+- Show code examples
+- Follow existing documentation patterns
 
-# Bad: No context
-make build
-```
+## 📜 License
 
-### Diagrams
+By contributing, you agree that your contributions will be licensed under [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
-Use Kroki-supported formats:
-- PlantUML for UML diagrams
-- Mermaid for flowcharts
-- GraphViz for graphs
+---
 
-## Commit Messages
-
-Follow Conventional Commits:
-
-```
-feat: add DTLS 1.3 analysis
-fix: correct cipher suite list
-docs: update deployment guide
-refactor: reorganize protocol section
-```
-
-## Pull Request Process
-
-1. Update documentation if needed
-2. Test locally (`npm start`)
-3. Ensure build passes (`npm run build`)
-4. Request review from maintainers
-5. Address review feedback
-6. Squash commits if requested
-
-## Legal & Ethical Guidelines
-
-### Reverse Engineering
-
-- Only analyze legally obtained software
-- Document for interoperability purposes
-- Do NOT distribute proprietary binaries
-- Follow responsible disclosure for vulnerabilities
-
-### Copyright
-
-- Ensure you have rights to content
-- Attribute sources properly
-- Use CC-BY-SA-4.0 compatible materials
-- Don't copy proprietary documentation
-
-## Questions?
-
-- Open a Discussion on GitHub
-- Email: contribute@docs.wolfguard.io
-
-Thank you for contributing!
+**Questions?** Open an issue or start a discussion. We're here to help!

@@ -7,8 +7,8 @@ const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'OpenConnect Protocol Documentation',
-  tagline: 'Cisco Secure Client 5.x+ Reverse Engineering & Implementation',
+  title: 'WolfGuard Documentation',
+  tagline: 'Modern OpenConnect VPN Server - Cisco Secure Client 5.x+ Compatible',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -18,7 +18,7 @@ const config = {
 
   // GitHub pages deployment config.
   organizationName: 'dantte-lp',
-  projectName: 'cisco-secure-client-docs',
+  projectName: 'wolfguard-docs',
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -189,7 +189,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/dantte-lp/cisco-secure-client-docs',
+            href: 'https://github.com/dantte-lp/wolfguard-docs',
             label: 'GitHub',
             position: 'right',
           },
@@ -244,11 +244,11 @@ const config = {
             title: 'Resources',
             items: [
               {
-                label: 'GitHub - Docs',
-                href: 'https://github.com/dantte-lp/cisco-secure-client-docs',
+                label: 'GitHub - Documentation',
+                href: 'https://github.com/dantte-lp/wolfguard-docs',
               },
               {
-                label: 'GitHub - wolfguard',
+                label: 'GitHub - WolfGuard Server',
                 href: 'https://github.com/dantte-lp/wolfguard',
               },
               {
@@ -279,7 +279,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} OpenConnect Protocol Documentation. Licensed under CC-BY-SA-4.0. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} WolfGuard Project. Licensed under CC-BY-SA-4.0. Built with Docusaurus.`,
       },
       prism: {
         theme: lightTheme,

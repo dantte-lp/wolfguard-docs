@@ -1,6 +1,6 @@
 # Release Notes
 
-This page tracks all releases and changes to the OpenConnect Protocol Documentation project.
+This page tracks all releases and changes to the WolfGuard Documentation project.
 
 ## Latest Release
 
@@ -74,5 +74,5 @@ This project follows [Semantic Versioning 2.0.0](https://semver.org/):
 
 ---
 
-**Maintained by**: OpenConnect Protocol Documentation Team
+**Maintained by**: WolfGuard Project Team
 **Last Updated**: 2025-10-29

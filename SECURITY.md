@@ -1,41 +1,95 @@
 # Security Policy
 
-## Supported Versions
+## 🔒 Security Overview
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x     | :white_check_mark: |
+WolfGuard is a security-critical VPN server implementation. We take security seriously and appreciate responsible disclosure of security vulnerabilities.
 
-## Reporting a Vulnerability
+## 🛡️ Supported Versions
 
-If you discover a security vulnerability within:
-- **OpenConnect Protocol Documentation**: Report via email
-- **wolfguard**: Use https://github.com/dantte-lp/wolfguard/security
-- **ocserv (vanilla)**: Use https://gitlab.com/openconnect/ocserv/-/issues
+| Version | Status | Support |
+|---------|--------|---------|
+| 1.0.x   | ✅ Active | Full security support |
+| < 1.0   | ⚠️ Beta | Best effort, upgrade recommended |
 
-### For Protocol Vulnerabilities
+## 🚨 Reporting a Vulnerability
 
-Email: security@docs.wolfguard.io (PGP preferred)
+**DO NOT** open public issues for security vulnerabilities.
 
-**DO NOT** create public issues for security vulnerabilities.
+### Preferred Reporting Methods
 
-### Response Time
+1. **GitHub Security Advisories** (Recommended):
+   - Navigate to: https://github.com/dantte-lp/wolfguard/security/advisories
+   - Click "New draft security advisory"
+   - Provide detailed information
 
-- Acknowledgment: Within 48 hours
-- Initial assessment: Within 1 week
-- Fix timeline: Depends on severity (1-90 days)
+2. **Direct Contact**:
+   - For critical vulnerabilities requiring immediate attention
+   - Contact via GitHub discussions (mark as security-sensitive)
 
-## Security Disclosure Policy
+### Information to Include
 
-We follow responsible disclosure:
+Please provide as much information as possible:
 
-1. Report privately
-2. Allow time for fixes
-3. Coordinate public disclosure
-4. Credit researchers (if desired)
+- **Vulnerability Type**: Buffer overflow, authentication bypass, etc.
+- **Affected Component**: Which module/file is affected
+- **Severity**: Your assessment (Critical/High/Medium/Low)
+- **Proof of Concept**: Steps to reproduce
+- **Impact**: What an attacker could achieve
 
-## Out of Scope
+## ⏱️ Response Timeline
 
-- Third-party dependencies (report to upstream)
-- Cisco Secure Client vulnerabilities (report to Cisco)
-- Issues in test/demo environments
+We aim to respond to security reports within:
+
+- **24 hours**: Initial acknowledgment
+- **72 hours**: Preliminary assessment
+- **7 days**: Detailed analysis and fix timeline
+- **30 days**: Public disclosure (coordinated)
+
+## 🎯 Scope
+
+### In Scope
+
+Security vulnerabilities in:
+
+- WolfGuard Server core implementation
+- Authentication mechanisms (SAML, OTP, certificates)
+- Cryptography (TLS/DTLS)
+- Session Management
+- Configuration and privilege handling
+
+### Out of Scope
+
+- DDoS attacks
+- Social engineering
+- Physical access attacks
+- Documentation typos (report as issues instead)
+
+## 🔐 Security Best Practices
+
+### For Administrators
+
+1. Keep WolfGuard updated to latest stable version
+2. Run as non-root user (principle of least privilege)
+3. Enable security logging and monitoring
+4. Protect private keys and passwords
+5. Disable unused features
+
+### For Developers
+
+1. Validate all user input
+2. Prevent buffer overflows
+3. Use safe string functions
+4. Don't roll your own crypto
+5. Get security-critical code reviewed
+
+## 📞 Contact
+
+- **Security Issues**: GitHub Security Advisories (preferred)
+- **General Questions**: https://github.com/dantte-lp/wolfguard/discussions
+- **Non-Security Bugs**: https://github.com/dantte-lp/wolfguard/issues
+
+---
+
+**Thank you for helping keep WolfGuard secure!**
+
+Last Updated: 2025-10-29
