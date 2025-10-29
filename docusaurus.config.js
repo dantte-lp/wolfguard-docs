@@ -180,7 +180,7 @@ const config = {
             position: 'left',
           },
           {
-            to: '/docs/releases/index',
+            to: '/docs/releases/',
             label: 'Releases',
             position: 'left',
           },
@@ -253,11 +253,11 @@ const config = {
               },
               {
                 label: 'Release Notes',
-                to: '/docs/releases/index',
+                to: '/docs/releases/',
               },
               {
                 label: 'Contributing',
-                href: '/CONTRIBUTING.md',
+                href: 'https://github.com/dantte-lp/wolfguard-docs/blob/main/CONTRIBUTING.md',
               },
             ],
           },
@@ -274,7 +274,7 @@ const config = {
               },
               {
                 label: 'Security Policy',
-                href: '/SECURITY.md',
+                href: 'https://github.com/dantte-lp/wolfguard-docs/blob/main/SECURITY.md',
               },
             ],
           },

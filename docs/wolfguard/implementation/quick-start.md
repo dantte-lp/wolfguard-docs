@@ -330,8 +330,8 @@ X-CSTP-MTU: 1406
 ## Next Steps
 
 1. **Read Full Docs**:
-   - [CISCO_COMPATIBILITY_GUIDE.md](CISCO_COMPATIBILITY_GUIDE.md) - Complete implementation guide
-   - [PROTOCOL_REFERENCE.md](PROTOCOL_REFERENCE.md) - Protocol specification
+   - [Cisco Compatibility Guide](../protocol/cisco-compatibility.md) - Complete implementation guide
+   - [OpenConnect Protocol v1.2](../protocol/openconnect-v1.2.md) - Protocol specification
 
 2. **Review Analysis**:
    - `/opt/projects/repositories/cisco-secure-client/analysis/REVERSE_ENGINEERING_FINDINGS.md`
@@ -362,7 +362,7 @@ X-CSTP-MTU: 1406
 - Capture and analyze traffic with Wireshark
 
 **Common Issues**:
-- Check Troubleshooting section in CISCO_COMPATIBILITY_GUIDE.md
+- Check Troubleshooting section in [Cisco Compatibility Guide](../protocol/cisco-compatibility.md)
 - Review error codes in REVERSE_ENGINEERING_FINDINGS.md
 - Compare packet captures with expected format
 
@@ -372,4 +372,4 @@ X-CSTP-MTU: 1406
 
 ---
 
-*For detailed implementation guidance, see: [CISCO_COMPATIBILITY_GUIDE.md](CISCO_COMPATIBILITY_GUIDE.md)*
+*For detailed implementation guidance, see: [Cisco Compatibility Guide](../protocol/cisco-compatibility.md)*

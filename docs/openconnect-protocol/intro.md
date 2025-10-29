@@ -54,7 +54,7 @@ This documentation is produced through clean-room reverse engineering for **inte
 
 ## Contributing
 
-Found inaccuracies or have additional protocol insights? See our [Contributing Guide](../../CONTRIBUTING.md) for how to submit improvements.
+Found inaccuracies or have additional protocol insights? See our [Contributing Guide](https://github.com/dantte-lp/wolfguard-docs/blob/main/CONTRIBUTING.md) for how to submit improvements.
 
 ---
 

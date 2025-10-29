@@ -9,10 +9,10 @@
 
 ## Overview
 
-This guide provides specific implementation requirements for ensuring 100% compatibility with Cisco Secure Client (formerly AnyConnect) 5.x. It is based on comprehensive reverse engineering analysis of official Cisco binaries and complements the [PROTOCOL_REFERENCE.md](PROTOCOL_REFERENCE.md) document.
+This guide provides specific implementation requirements for ensuring 100% compatibility with Cisco Secure Client (formerly AnyConnect) 5.x. It is based on comprehensive reverse engineering analysis of official Cisco binaries and complements the [OpenConnect Protocol](../protocol/openconnect-v1.2.md) documentation.
 
 **Related Documents**:
-- [PROTOCOL_REFERENCE.md](PROTOCOL_REFERENCE.md) - Protocol specification and standards
+- [OpenConnect Protocol v1.2](../protocol/openconnect-v1.2.md) - Protocol specification and standards
 - Cisco analysis: `/opt/projects/repositories/cisco-secure-client/analysis/REVERSE_ENGINEERING_FINDINGS.md`
 
 ---

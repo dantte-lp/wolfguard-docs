@@ -28,13 +28,10 @@ wolfguard is a comprehensive refactoring of the OpenConnect VPN server (ocserv),
 
 Core architectural decisions and design patterns:
 
-- **[Architecture Overview](architecture/overview.md)** - High-level system architecture
 - **[Modern VPN Design](architecture/modern-vpn-design.md)** - Event-driven patterns, zero-copy networking, NUMA awareness
-- **[TLS Abstraction Layer](architecture/tls-abstraction.md)** - Dual-backend design (wolfSSL/GnuTLS)
-- **[Session Cache](architecture/session-cache.md)** - TLS session resumption implementation
 - **[wolfSentry IDPS Integration](architecture/wolfsentry-integration.md)** - Embedded firewall and intrusion detection
-- **[Crypto Stack](architecture/crypto-stack.md)** - wolfSSL, wolfSentry, wolfCLU integration
-- **[Performance Optimization](architecture/performance-optimization.md)** - io_uring, zero-copy, multi-queue TUN
+
+_Additional architecture documentation (TLS abstraction, session cache, crypto stack, performance optimization) is planned for future releases._
 
 ### Protocol Documentation
 
@@ -42,35 +39,28 @@ OpenConnect VPN protocol specifications and compatibility:
 
 - **[OpenConnect Protocol v1.2](protocol/openconnect-v1.2.md)** - Official protocol specification
 - **[Cisco Compatibility](protocol/cisco-compatibility.md)** - Cisco Secure Client 5.x+ compatibility requirements
-- **[TLS/DTLS Support](protocol/tls-dtls-support.md)** - TLS 1.3, DTLS 1.3 implementation
-- **[Authentication Flows](protocol/authentication.md)** - Authentication methods and flows
+
+_Additional protocol documentation (TLS/DTLS support, authentication flows) is planned for future releases._
 
 ### Implementation Guides
 
-Technical implementation details and coding patterns:
+Technical implementation details and integration guides:
 
-- **[wolfSSL Native API](implementation/wolfssl-native-api.md)** - wolfSSL usage patterns and best practices
-- **[wolfSentry IDPS](implementation/wolfsentry-idps.md)** - Firewall rules, IDPS configuration, threat detection
-- **[libuv Event Loop](implementation/libuv-event-loop.md)** - Async I/O patterns
-- **[Pure C Libraries](implementation/pure-c-libraries.md)** - zlog, libprom, tomlc99, cJSON
-- **[C23 Features](implementation/c23-features.md)** - Modern C usage guidelines
+- **[wolfSSL Integration](implementation/wolfssl.md)** - wolfSSL usage patterns and best practices
+- **[Compatibility Guide](implementation/compatibility.md)** - Cisco Secure Client compatibility details
+- **[Quick Start Guide](implementation/quick-start.md)** - Getting started with WolfGuard
+- **[Deployment Guide](implementation/deployment.md)** - Production deployment instructions
 
-### Development Guides
+_Additional implementation guides (libuv patterns, C23 features, pure C libraries) are planned for future releases._
 
-Build system, testing, and development environment:
+### Getting Started
 
-- **[Build System](development/build-system.md)** - Meson, CMake configuration
-- **[Testing](development/testing.md)** - Unity, CMock, Ceedling testing framework
-- **[Container Environment](development/container-environment.md)** - Podman development setup
-- **[Coding Standards](development/coding-standards.md)** - C23 best practices and style guide
+Quick start guides and overview:
 
-### Deployment Guides
+- **[Overview](getting-started/overview.md)** - WolfGuard project overview
+- **[Quick Start](getting-started/quick-start.md)** - Get up and running quickly
 
-Production deployment and operations:
-
-- **[Installation](deployment/installation.md)** - Build and installation instructions
-- **[Configuration](deployment/configuration.md)** - Server configuration reference
-- **[Troubleshooting](deployment/troubleshooting.md)** - Common issues and solutions
+_Development guides (build system, testing, container environment, coding standards) and additional deployment documentation (configuration reference, troubleshooting) are planned for future releases._
 
 ---
 
