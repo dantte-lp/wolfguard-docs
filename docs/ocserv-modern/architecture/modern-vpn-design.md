@@ -656,4 +656,4 @@ static bool timing_safe_compare(const uint8_t *a, const uint8_t *b, size_t len) 
 Generated with Claude Code
 https://claude.com/claude-code
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;

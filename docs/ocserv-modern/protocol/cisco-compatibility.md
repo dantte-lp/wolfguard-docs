@@ -952,9 +952,9 @@ Target performance (per server instance):
 | Concurrent connections | 10,000+ | With DTLS |
 | New connections/sec | 100+ | Full handshake |
 | Throughput per tunnel | 100+ Mbps | With compression |
-| DPD overhead | <1% | Network bandwidth |
-| Reconnection time | <2 sec | Tunnel-level |
-| Memory per connection | <10 MB | Including buffers |
+| DPD overhead | \<1% | Network bandwidth |
+| Reconnection time | \<2 sec | Tunnel-level |
+| Memory per connection | \<10 MB | Including buffers |
 
 ---
 

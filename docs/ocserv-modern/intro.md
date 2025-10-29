@@ -359,4 +359,4 @@ See [LICENSE](https://github.com/dantte-lp/ocserv-modern/blob/master/LICENSE) in
 Generated with Claude Code
 https://claude.com/claude-code
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: Claude &lt;noreply@anthropic.com&gt;
