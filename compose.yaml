@@ -2,7 +2,7 @@
 # OpenConnect Protocol Documentation - Production Deployment
 # Compose Specification 2025 (Modern, Production-Ready)
 # ═══════════════════════════════════════════════════════════════════
-# Domain: https://ocproto.infra4.dev
+# Domain: https://docs.wolfguard.io
 # Technology: Docusaurus 3 + Nginx 1.29 + Kroki Diagrams
 #
 # Features:
@@ -39,7 +39,7 @@
 x-common-labels: &common-labels
   org.opencontainers.image.vendor: "OpenConnect Protocol Documentation"
   org.opencontainers.image.source: "https://github.com/dantte-lp/cisco-secure-client-docs"
-  org.opencontainers.image.url: "https://ocproto.infra4.dev"
+  org.opencontainers.image.url: "https://docs.wolfguard.io"
   org.opencontainers.image.version: "${VERSION:-1.0.0}"
   org.opencontainers.image.created: "${BUILD_DATE:-2025-10-29}"
   com.ocproto.environment: "production"
@@ -132,7 +132,7 @@ services:
 
       # HTTPS Router
       traefik.http.routers.ocproto-docs.entrypoints: "https"
-      traefik.http.routers.ocproto-docs.rule: "Host(`ocproto.infra4.dev`)"
+      traefik.http.routers.ocproto-docs.rule: "Host(`docs.wolfguard.io`)"
       traefik.http.routers.ocproto-docs.tls: "true"
       traefik.http.routers.ocproto-docs.tls.certresolver: "cloudflare"
 

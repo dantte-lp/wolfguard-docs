@@ -69,8 +69,8 @@ RUN chown -R nginx:nginx /var/cache/nginx \
 # OCI Standard Labels
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.authors="Your Organization" \
-      org.opencontainers.image.url="https://ocproto.infra4.dev" \
-      org.opencontainers.image.documentation="https://ocproto.infra4.dev/docs" \
+      org.opencontainers.image.url="https://docs.wolfguard.io" \
+      org.opencontainers.image.documentation="https://docs.wolfguard.io/docs" \
       org.opencontainers.image.source="${VCS_URL}" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${VCS_REF}" \

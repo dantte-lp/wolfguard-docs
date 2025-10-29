@@ -343,7 +343,7 @@ This document makes no requests to IANA.
 
 - Cisco Secure Client documentation
 - OpenConnect VPN client source code
-- ocserv-modern implementation
+- wolfguard implementation
 
 ---
 

@@ -547,7 +547,7 @@ access-list ManagementRoutes permit ip any host 10.0.0.10 (Update server)
 ### 2.6 C23 Implementation Concept (Linux/ocserv)
 
 ```c
-// File: ocserv-modern/src/tunnel/management_tunnel.c
+// File: wolfguard/src/tunnel/management_tunnel.c
 #include <stdint.h>
 #include <stdbool.h>
 #include <sys/socket.h>
@@ -800,7 +800,7 @@ WantedBy=multi-user.target
 **IPC via Unix Domain Sockets:**
 
 ```c
-// File: ocserv-modern/src/ipc/unix_socket_ipc.c
+// File: wolfguard/src/ipc/unix_socket_ipc.c
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
@@ -1047,4 +1047,4 @@ All achieve same goal: **VPN before user authentication**
 
 **Document Revision:** 1.0
 **Author:** Reverse Engineering Analysis Team
-**Target:** ocserv-modern C23 implementation with cross-platform understanding
+**Target:** wolfguard C23 implementation with cross-platform understanding

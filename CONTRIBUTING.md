@@ -106,6 +106,6 @@ refactor: reorganize protocol section
 ## Questions?
 
 - Open a Discussion on GitHub
-- Email: contribute@ocproto.infra4.dev
+- Email: contribute@docs.wolfguard.io
 
 Thank you for contributing!

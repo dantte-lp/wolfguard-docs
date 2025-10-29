@@ -187,7 +187,7 @@ plugins: [
     {
       siteId: '1',
       matomoUrl: 'https://matomo.example.com/',
-      siteUrl: 'https://ocproto.infra4.dev',
+      siteUrl: 'https://docs.wolfguard.io',
     },
   ],
 ],
@@ -214,7 +214,7 @@ plugins: [
       redirects: [
         {
           from: '/docs/getting-started/overview',
-          to: '/docs/ocserv-modern/getting-started/overview',
+          to: '/docs/wolfguard/getting-started/overview',
         },
         {
           from: '/docs/protocol',

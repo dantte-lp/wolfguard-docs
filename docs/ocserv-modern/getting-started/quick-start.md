@@ -21,8 +21,8 @@ Before you begin, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/dantte-lp/ocserv-modern.git
-cd ocserv-modern
+git clone https://github.com/dantte-lp/wolfguard.git
+cd wolfguard
 ```
 
 ### 2. Install Dependencies
@@ -203,7 +203,7 @@ Now that you have a working setup:
 
 ## Additional Resources
 
-- **Official Docs**: [ocserv-modern documentation](https://github.com/dantte-lp/ocserv-modern)
+- **Official Docs**: [wolfguard documentation](https://github.com/dantte-lp/wolfguard)
 - **WolfSSL Integration**: [WolfSSL Guide](/docs/implementation/wolfssl)
 - **Troubleshooting**: Check logs in `/var/log/ocserv/`
 

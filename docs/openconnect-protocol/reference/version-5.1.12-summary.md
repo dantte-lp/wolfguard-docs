@@ -13,7 +13,7 @@
 
 Cisco Secure Client 5.1.12.146 introduces significant enhancements while maintaining full backward compatibility with 5.1.2.42. The primary changes focus on diagnostics (DART), enterprise integration (ISE Posture), network visibility improvements, and TLS 1.3 support.
 
-### Critical Findings for ocserv-modern
+### Critical Findings for wolfguard
 
 | Priority | Change | Impact | Action Required |
 |----------|--------|--------|-----------------|
@@ -33,7 +33,7 @@ Cisco Secure Client 5.1.12.146 introduces significant enhancements while maintai
 - Split tunneling: Same behavior
 - MTU/DPD/Keepalive: Same logic
 
-**Conclusion**: Existing ocserv-modern installations will work with 5.1.12.146 clients without modifications. TLS 1.3 support recommended for optimal performance.
+**Conclusion**: Existing wolfguard installations will work with 5.1.12.146 clients without modifications. TLS 1.3 support recommended for optimal performance.
 
 ---
 
@@ -93,7 +93,7 @@ Purpose:
 - Multi-module support (VPN, Umbrella, NVM, Posture)
 ```
 
-**ocserv-modern Action**: Update troubleshooting docs to reference DART
+**wolfguard Action**: Update troubleshooting docs to reference DART
 
 #### 2. ISE Posture Module
 **Impact**: May require server-side ISE protocol support
@@ -111,7 +111,7 @@ Purpose:
 - Policy-based access control
 ```
 
-**ocserv-modern Action**: Implement basic ISE posture responses (Priority: MEDIUM)
+**wolfguard Action**: Implement basic ISE posture responses (Priority: MEDIUM)
 
 #### 3. Enhanced Network Visibility Module (NVM)
 **Impact**: Client-side only, zero server impact
@@ -129,7 +129,7 @@ Purpose:
 - Bandwidth analytics
 ```
 
-**ocserv-modern Action**: None required
+**wolfguard Action**: None required
 
 #### 4. TLS 1.3 Full Support
 **Impact**: HIGH - Recommended server upgrade
@@ -149,7 +149,7 @@ Disabled Weak Ciphers:
 - !DHE-RSA-AES*-SHA (non-GCM, SHA-1)
 ```
 
-**ocserv-modern Action**: Enable TLS 1.3 in wolfSSL (Priority: HIGH)
+**wolfguard Action**: Enable TLS 1.3 in wolfSSL (Priority: HIGH)
 
 ---
 
@@ -234,7 +234,7 @@ DTLS 1.3: Not supported (neither version)
 
 ---
 
-## Implementation Checklist for ocserv-modern
+## Implementation Checklist for wolfguard
 
 ### Phase 1: Essential Updates (Required)
 
@@ -509,7 +509,7 @@ Phase 3: Optional - Require TLS 1.3
 
 **Status**: Basic compatibility may not work in all scenarios
 **Impact**: Some enterprise deployments may require full ISE
-**Timeline**: Depends on ocserv-modern roadmap
+**Timeline**: Depends on wolfguard roadmap
 **Workaround**: Use legacy posture or implement full ISE support
 
 ### 4. DART Cannot Upload to Non-Cisco Servers
@@ -606,7 +606,7 @@ dartcli --module=iseposture --output=ise-diag.tar.gz
 
 ### Pre-Migration
 
-- [ ] Review current ocserv-modern version and configuration
+- [ ] Review current wolfguard version and configuration
 - [ ] Identify client versions in use (5.1.2.42 vs 5.1.12.146)
 - [ ] Check certificate expiration and chain completeness
 - [ ] Backup current configuration
@@ -616,7 +616,7 @@ dartcli --module=iseposture --output=ise-diag.tar.gz
 ### Build and Test
 
 - [ ] Build wolfSSL 5.7.2+ with TLS 1.3
-- [ ] Compile ocserv-modern against new wolfSSL
+- [ ] Compile wolfguard against new wolfSSL
 - [ ] Update ocserv.conf with TLS 1.3 configuration
 - [ ] Test in staging environment
   - [ ] 5.1.2.42 client connects (TLS 1.2)
@@ -692,7 +692,7 @@ Configuration Templates:
 
 Cisco Secure Client 5.1.12.146 represents a significant quality and security update while maintaining complete backward compatibility. The introduction of TLS 1.3, enhanced diagnostics (DART), and enterprise integration (ISE) makes this a recommended upgrade for all deployments.
 
-**For ocserv-modern operators**: The primary action item is enabling TLS 1.3 support. All other changes are either client-side only or provide optional enhancements. Existing 5.1.2.42-compatible servers will continue to work with 5.1.12.146 clients using TLS 1.2.
+**For wolfguard operators**: The primary action item is enabling TLS 1.3 support. All other changes are either client-side only or provide optional enhancements. Existing 5.1.2.42-compatible servers will continue to work with 5.1.12.146 clients using TLS 1.2.
 
 **Recommended Timeline**:
 - **Immediate**: Review TLS 1.3 implementation requirements

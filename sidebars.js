@@ -102,15 +102,15 @@ const sidebars = {
     },
 
     // =========================================================================
-    // ocserv-modern (Next-Generation Implementation)
+    // wolfguard (Next-Generation Implementation)
     // =========================================================================
     {
       type: 'category',
-      label: '🚀 ocserv-modern',
+      label: '🚀 wolfguard',
       collapsed: true,
       link: {
         type: 'doc',
-        id: 'ocserv-modern/intro',
+        id: 'wolfguard/intro',
       },
       items: [
         {
@@ -118,8 +118,8 @@ const sidebars = {
           label: 'Getting Started',
           collapsed: false,
           items: [
-            'ocserv-modern/getting-started/overview',
-            'ocserv-modern/getting-started/quick-start',
+            'wolfguard/getting-started/overview',
+            'wolfguard/getting-started/quick-start',
           ],
         },
         {
@@ -127,8 +127,8 @@ const sidebars = {
           label: 'Architecture',
           collapsed: true,
           items: [
-            'ocserv-modern/architecture/modern-vpn-design',
-            'ocserv-modern/architecture/wolfsentry-integration',
+            'wolfguard/architecture/modern-vpn-design',
+            'wolfguard/architecture/wolfsentry-integration',
           ],
         },
         {
@@ -136,8 +136,8 @@ const sidebars = {
           label: 'Protocol Implementation',
           collapsed: true,
           items: [
-            'ocserv-modern/protocol/openconnect-v1.2',
-            'ocserv-modern/protocol/cisco-compatibility',
+            'wolfguard/protocol/openconnect-v1.2',
+            'wolfguard/protocol/cisco-compatibility',
           ],
         },
         {
@@ -145,10 +145,10 @@ const sidebars = {
           label: 'Implementation Guide',
           collapsed: true,
           items: [
-            'ocserv-modern/implementation/wolfssl',
-            'ocserv-modern/implementation/compatibility',
-            'ocserv-modern/implementation/quick-start',
-            'ocserv-modern/implementation/deployment',
+            'wolfguard/implementation/wolfssl',
+            'wolfguard/implementation/compatibility',
+            'wolfguard/implementation/quick-start',
+            'wolfguard/implementation/deployment',
           ],
         },
       ],

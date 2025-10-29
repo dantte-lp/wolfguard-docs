@@ -35,7 +35,7 @@
 ## C23 Implementation
 
 ```c
-// ocserv-modern/src/auth/radius.c
+// wolfguard/src/auth/radius.c
 
 #include <freeradius-client.h>
 

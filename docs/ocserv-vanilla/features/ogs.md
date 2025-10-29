@@ -20,7 +20,7 @@ Selects: Gateway with lowest RTT among 3 probes
 ## Probe Implementation
 
 ```c
-// ocserv-modern/src/gateway/ogs.c
+// wolfguard/src/gateway/ogs.c
 
 #include <time.h>
 #include <sys/socket.h>

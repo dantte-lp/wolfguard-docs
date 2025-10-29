@@ -52,7 +52,7 @@ This section contains documentation for the **original OpenConnect Server (ocser
 
 ## Comparison: Vanilla vs Modern
 
-| Feature | ocserv (Vanilla) | [ocserv-modern](../ocserv-modern/intro.md) |
+| Feature | ocserv (Vanilla) | [wolfguard](../wolfguard/intro.md) |
 |---------|------------------|---------------------------------------------|
 | Language | C11 | C23 |
 | TLS Library | GnuTLS | WolfSSL |
@@ -71,9 +71,9 @@ Choose vanilla ocserv if you:
 ✅ Need **FIPS-compliant** deployments (with GnuTLS FIPS mode)
 ✅ Prefer **battle-tested** code in production environments
 
-## When to Consider ocserv-modern
+## When to Consider wolfguard
 
-Consider [ocserv-modern](../ocserv-modern/intro.md) if you:
+Consider [wolfguard](../wolfguard/intro.md) if you:
 
 ✅ Want **DTLS 1.3** support (Cisco Secure Client 5.x compatibility)
 ✅ Need **modern C23** features and memory safety

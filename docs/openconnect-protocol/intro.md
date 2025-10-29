@@ -32,7 +32,7 @@ The OpenConnect protocol is used by Cisco AnyConnect/Secure Client to establish 
 
 This documentation serves multiple purposes:
 
-1. **Interoperability**: Enable open-source implementations (ocserv-modern, openconnect)
+1. **Interoperability**: Enable open-source implementations (wolfguard, openconnect)
 2. **Security Research**: Document security mechanisms and potential vulnerabilities
 3. **Protocol Standardization**: Provide basis for RFC submission
 4. **Education**: Help developers understand modern VPN protocols
@@ -48,7 +48,7 @@ This documentation is produced through clean-room reverse engineering for **inte
 
 ## Related Projects
 
-- **[ocserv-modern](../ocserv-modern/intro.md)**: Modern OpenConnect server implementation
+- **[wolfguard](../wolfguard/intro.md)**: Modern OpenConnect server implementation
 - **[openconnect](https://www.infradead.org/openconnect/)**: OpenConnect VPN client
 - **[Cisco Secure Client](https://www.cisco.com/c/en/us/products/security/secure-client/)**: Official Cisco VPN client
 

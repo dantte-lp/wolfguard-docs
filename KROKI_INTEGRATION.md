@@ -42,7 +42,7 @@ This documentation site now includes **Kroki** - a universal diagram service tha
 **app (Nginx + Docusaurus)**:
 - Image: `localhost/ocproto-docs:latest` (multi-stage build)
 - Networks: `traefik-public` + `internal`
-- Access: https://ocproto.infra4.dev (public)
+- Access: https://docs.wolfguard.io (public)
 - Dependencies: Waits for Kroki to be healthy
 
 **kroki**:
@@ -262,5 +262,5 @@ ss -tulpn | grep 8000
 
 **Integration Status**: ✅ Complete
 **Services**: app + kroki
-**Access**: https://ocproto.infra4.dev (public), http://localhost:8000 (local)
+**Access**: https://docs.wolfguard.io (public), http://localhost:8000 (local)
 **Version**: Kroki 0.25.0, Docusaurus 3.5.2

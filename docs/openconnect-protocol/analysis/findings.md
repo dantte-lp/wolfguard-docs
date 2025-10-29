@@ -4,7 +4,7 @@
 **Date**: 2025-10-29
 **Analysis Tools**: Ghidra 11.3, Reko 0.12.0, angr 9.2
 **Target Binaries**: vpnagentd, libvpnapi.so, libacciscossl.so
-**Purpose**: Document findings from advanced decompilation for ocserv-modern integration
+**Purpose**: Document findings from advanced decompilation for wolfguard integration
 
 ---
 
@@ -49,7 +49,7 @@ This document presents findings from advanced binary analysis of Cisco Secure Cl
 | `base32_decode` | 0x00426c10 | RFC 4648 Base32 decoder | 95 |
 | `constant_time_compare` | 0x00426f50 | Timing-safe comparison | 22 |
 
-**ocserv-modern Impact**: Can implement 100% compatible TOTP using wolfCrypt HMAC-SHA1
+**wolfguard Impact**: Can implement 100% compatible TOTP using wolfCrypt HMAC-SHA1
 
 #### 1.2 X-CSTP Protocol Handler (libvpnapi.so)
 
@@ -91,7 +91,7 @@ X-CSTP-Disconnect-Reason     (Disconnection reason code)
 7. DISCONNECTING  → Graceful shutdown
 ```
 
-**ocserv-modern Impact**: Must implement all `X-CSTP-*` headers for full compatibility
+**wolfguard Impact**: Must implement all `X-CSTP-*` headers for full compatibility
 
 #### 1.3 DTLS Cookie Verification (vpnagentd)
 
@@ -113,7 +113,7 @@ cookie = HMAC-SHA256(
 )[:16]  // First 16 bytes
 ```
 
-**ocserv-modern Impact**: Use wolfSSL's built-in DTLS cookie mechanism (compatible)
+**wolfguard Impact**: Use wolfSSL's built-in DTLS cookie mechanism (compatible)
 
 #### 1.4 Certificate Validation (libacciscossl.so)
 
@@ -133,7 +133,7 @@ cookie = HMAC-SHA256(
 4. Optional: Validate against CRL/OCSP
 5. Optional: Check certificate fingerprint against pinned value
 
-**ocserv-modern Impact**: wolfSSL handles standard X.509 validation; implement optional pinning
+**wolfguard Impact**: wolfSSL handles standard X.509 validation; implement optional pinning
 
 ### 1.5 Analysis Statistics
 
@@ -206,7 +206,7 @@ cookie = HMAC-SHA256(
                  v
         ┌──────────────────────┐
         │   C23 Code           │
-        │   (ocserv-modern)    │
+        │   (wolfguard)    │
         └──────────────────────┘
 ```
 
@@ -289,7 +289,7 @@ uint32_t vpn_totp_generate(const uint8_t *secret,
 4. ✅ 6-digit output (standard)
 5. ⚠️ Hardcoded 30-second step (no configuration option)
 
-**Conversion to C23 (ocserv-modern)**:
+**Conversion to C23 (wolfguard)**:
 
 See Section 8.1 below for production-ready implementation.
 
@@ -392,7 +392,7 @@ int cisco_constant_time_compare(const void *a, const void *b, size_t len)
 - ✅ **Side-Channel Resistant**: XOR operation takes same time regardless of input
 - ✅ **Simple Implementation**: Easy to audit for correctness
 
-**ocserv-modern**: Use `wolfSSL_ConstantCompare()` or implement identical logic
+**wolfguard**: Use `wolfSSL_ConstantCompare()` or implement identical logic
 
 ### 3.4 libvpnapi.so: X-CSTP Header Parser
 
@@ -457,7 +457,7 @@ int parse_cstp_headers(http_response_t *response, cstp_config_t *config)
 }
 ```
 
-**ocserv-modern Impact**: Must send all X-CSTP headers in HTTP/1.1 response
+**wolfguard Impact**: Must send all X-CSTP headers in HTTP/1.1 response
 
 ### 3.5 Function Call Graph Analysis
 
@@ -539,7 +539,7 @@ struct Eq_20 {
 };
 ```
 
-**ocserv-modern Equivalent** (wolfSSL):
+**wolfguard Equivalent** (wolfSSL):
 ```c
 typedef struct tls_context {
     WOLFSSL *ssl;                        // wolfSSL session
@@ -784,7 +784,7 @@ Analysis Time: 4.2 hours
 **Issue**: SHA-1 collision attacks (not critical for HMAC, but deprecated)
 **Recommendation**: Support HMAC-SHA256 as option (RFC 6238 Section 5.1)
 
-**ocserv-modern**: Implement both SHA-1 (compatibility) and SHA-256 (modern)
+**wolfguard**: Implement both SHA-1 (compatibility) and SHA-256 (modern)
 
 #### 2. Weak TLS Ciphers Allowed
 
@@ -792,7 +792,7 @@ Analysis Time: 4.2 hours
 **Issue**: Deprecated cipher, vulnerable to BEAST/Lucky13 attacks
 **Recommendation**: Disable CBC-mode ciphers, enforce AEAD only
 
-**ocserv-modern**: Use wolfSSL modern cipher suites only (AES-GCM, ChaCha20-Poly1305)
+**wolfguard**: Use wolfSSL modern cipher suites only (AES-GCM, ChaCha20-Poly1305)
 
 #### 3. No Rate Limiting in OTP Function
 
@@ -800,11 +800,11 @@ Analysis Time: 4.2 hours
 **Issue**: Allows brute-force attempts if called repeatedly
 **Mitigation**: Rate limiting implemented at higher layer (connection handler)
 
-**ocserv-modern**: Use wolfSentry for rate limiting (see WOLFSSL_INTEGRATION.md Section 11)
+**wolfguard**: Use wolfSentry for rate limiting (see WOLFSSL_INTEGRATION.md Section 11)
 
 ### 6.3 Comparison with Best Practices
 
-| Security Practice | Cisco Implementation | ocserv-modern Target |
+| Security Practice | Cisco Implementation | wolfguard Target |
 |------------------|---------------------|----------------------|
 | Constant-time OTP compare | ✅ | ✅ |
 | ±1 time step window | ✅ | ✅ |
@@ -868,7 +868,7 @@ Analysis Time: 4.2 hours
 
 ### 8.1 TOTP Generation (Production-Ready)
 
-**File**: `/opt/projects/repositories/ocserv-modern/src/auth/totp.c`
+**File**: `/opt/projects/repositories/wolfguard/src/auth/totp.c`
 
 ```c
 // src/auth/totp.c
@@ -988,7 +988,7 @@ totp_verify(const char *secret_b32, const char *user_input)
  * Provision new TOTP secret for user
  *
  * @param username     Username for QR code label
- * @param issuer       Service name (e.g., "ocserv-modern")
+ * @param issuer       Service name (e.g., "wolfguard")
  * @param secret_out   Buffer for Base32-encoded secret (min 32 bytes)
  * @param qr_url_out   Buffer for otpauth:// URL (min 256 bytes)
  * @return             0 on success, -1 on failure
@@ -1025,7 +1025,7 @@ totp_provision(const char *username, const char *issuer,
 }
 ```
 
-**Header File**: `/opt/projects/repositories/ocserv-modern/src/auth/totp.h`
+**Header File**: `/opt/projects/repositories/wolfguard/src/auth/totp.h`
 
 ```c
 // src/auth/totp.h
@@ -1060,7 +1060,7 @@ totp_provision(const char *username, const char *issuer,
 
 ### 8.2 X-CSTP Header Generator
 
-**File**: `/opt/projects/repositories/ocserv-modern/src/protocol/cstp_headers.c`
+**File**: `/opt/projects/repositories/wolfguard/src/protocol/cstp_headers.c`
 
 ```c
 // src/protocol/cstp_headers.c
@@ -1152,7 +1152,7 @@ cstp_generate_headers(const cstp_config_t *config, char *buffer, size_t buffer_s
 
 ### 8.3 Unit Tests
 
-**File**: `/opt/projects/repositories/ocserv-modern/tests/unit/test_totp.c`
+**File**: `/opt/projects/repositories/wolfguard/tests/unit/test_totp.c`
 
 ```c
 // tests/unit/test_totp.c
@@ -1247,5 +1247,5 @@ void test_totp_time_window(void) {
 ---
 
 **Document Status**: Production Ready
-**Next Steps**: Implement C23 code in ocserv-modern Sprint 5-7
+**Next Steps**: Implement C23 code in wolfguard Sprint 5-7
 **Validation**: All code tested against Cisco Secure Client 5.1.6.103

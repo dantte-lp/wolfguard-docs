@@ -17,7 +17,7 @@ DART (Diagnostics and Reporting Tool) is a comprehensive diagnostic framework in
 
 **Key Characteristics**:
 - **Client-side only** - No server-side protocol changes
-- **Zero impact on ocserv-modern** - Purely diagnostic/logging functionality
+- **Zero impact on wolfguard** - Purely diagnostic/logging functionality
 - **Multi-module support** - Collects data from VPN, Umbrella, NVM, Posture, ISE
 - **Cross-platform** - Windows, macOS, Linux implementations
 - **Automated collection** - Runs external commands, parses logs, gathers system info
@@ -1026,13 +1026,13 @@ To upload: dartcli --upload-report=/var/tmp/full-diagnostic.tar.gz
 
 ---
 
-## Implementation Notes for ocserv-modern
+## Implementation Notes for wolfguard
 
 ### Impact Assessment
 
 **Server Impact**: **NONE**
 
-DART is entirely client-side and has zero impact on ocserv-modern:
+DART is entirely client-side and has zero impact on wolfguard:
 - No protocol changes
 - No server-side DART support needed
 - No new authentication methods
@@ -1043,7 +1043,7 @@ DART is entirely client-side and has zero impact on ocserv-modern:
 
 #### 1. Documentation Update
 
-**Add to ocserv-modern troubleshooting guide**:
+**Add to wolfguard troubleshooting guide**:
 
 ```markdown
 ## Collecting Client Diagnostics
@@ -1063,7 +1063,7 @@ dartcli --module=vpn --output=vpn-diagnostics.tar.gz
 ```
 
 ### Submitting Diagnostics
-When reporting issues with ocserv-modern:
+When reporting issues with wolfguard:
 1. Collect DART report
 2. Attach to bug report
 3. Include server logs separately

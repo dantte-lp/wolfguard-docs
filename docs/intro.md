@@ -64,7 +64,7 @@ This documentation is intended for:
 
 ## Project Background
 
-This work is part of the **ocserv-modern** project, which aims to create a modern, WolfSSL-based OpenConnect VPN server that maintains full compatibility with Cisco Secure Client 5.x+.
+This work is part of the **wolfguard** project, which aims to create a modern, WolfSSL-based OpenConnect VPN server that maintains full compatibility with Cisco Secure Client 5.x+.
 
 ### Why This Matters
 
@@ -86,7 +86,7 @@ If you're new here, start with:
 This documentation is a living project. Contributions, corrections, and additional analysis are welcome.
 
 **Related Projects:**
-- [ocserv-modern](https://github.com/dantte-lp/ocserv-modern) - Modern OpenConnect server
+- [wolfguard](https://github.com/dantte-lp/wolfguard) - Modern OpenConnect server
 - [OpenConnect](https://www.infradead.org/openconnect/) - Official OpenConnect client
 
 ## Legal Notice

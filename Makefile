@@ -96,7 +96,7 @@ start: ## Start all containers with podman-compose
 	@echo "$(BLUE)Starting containers...$(NC)"
 	$(COMPOSE) up -d
 	@echo "$(GREEN)✓ Containers started!$(NC)"
-	@echo "$(BLUE)Access at: https://ocproto.infra4.dev$(NC)"
+	@echo "$(BLUE)Access at: https://docs.wolfguard.io$(NC)"
 	@echo "$(BLUE)Kroki local: http://localhost:8000$(NC)"
 
 start-kroki: ## Start only Kroki service (for local development)
@@ -146,7 +146,7 @@ health: ## Check all container health
 	@podman inspect ocproto-kroki --format='{{.State.Status}}' 2>/dev/null || echo "$(RED)Container not running$(NC)"
 	@echo ""
 	@echo "$(BLUE)Testing HTTPS access:$(NC)"
-	@curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://ocproto.infra4.dev || echo "$(RED)Failed to connect$(NC)"
+	@curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://docs.wolfguard.io || echo "$(RED)Failed to connect$(NC)"
 
 health-kroki: ## Check Kroki health
 	@echo "$(BLUE)Checking Kroki health...$(NC)"
@@ -177,7 +177,7 @@ test-kroki: ## Test Kroki diagram generation
 
 deploy: build start ## Build and deploy containers
 	@echo "$(GREEN)✓ Deployment complete!$(NC)"
-	@echo "$(BLUE)Site available at: https://ocproto.infra4.dev$(NC)"
+	@echo "$(BLUE)Site available at: https://docs.wolfguard.io$(NC)"
 	@echo "$(BLUE)Check Traefik dashboard: https://tr-01.infra4.dev$(NC)"
 	@echo "$(BLUE)Kroki local access: http://localhost:8000$(NC)"
 	@sleep 3
@@ -244,7 +244,7 @@ test: ## Run basic tests
 	@podman ps | grep ocproto-kroki && echo "$(GREEN)✓ Kroki container running$(NC)" || (echo "$(RED)✗ Kroki container not running$(NC)" && exit 1)
 	@echo ""
 	@echo "$(BLUE)3. Testing HTTPS access...$(NC)"
-	@curl -s -f -o /dev/null https://ocproto.infra4.dev && echo "$(GREEN)✓ Site accessible$(NC)" || (echo "$(RED)✗ Site not accessible$(NC)" && exit 1)
+	@curl -s -f -o /dev/null https://docs.wolfguard.io && echo "$(GREEN)✓ Site accessible$(NC)" || (echo "$(RED)✗ Site not accessible$(NC)" && exit 1)
 	@echo ""
 	@echo "$(BLUE)4. Testing Kroki health...$(NC)"
 	@curl -s http://localhost:8000/health >/dev/null && echo "$(GREEN)✓ Kroki responding$(NC)" || (echo "$(RED)✗ Kroki not responding$(NC)" && exit 1)
@@ -280,7 +280,7 @@ info: ## Show project information
 	@echo "$(BLUE)  OpenConnect Protocol Documentation$(NC)"
 	@echo "$(BLUE)═══════════════════════════════════════════════════════$(NC)"
 	@echo ""
-	@echo "  $(GREEN)Production URL:$(NC)   https://ocproto.infra4.dev"
+	@echo "  $(GREEN)Production URL:$(NC)   https://docs.wolfguard.io"
 	@echo "  $(GREEN)Kroki Local:$(NC)      http://localhost:8000"
 	@echo "  $(GREEN)Traefik Dashboard:$(NC) https://tr-01.infra4.dev"
 	@echo ""

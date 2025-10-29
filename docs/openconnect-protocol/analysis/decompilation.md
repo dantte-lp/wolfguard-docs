@@ -2,7 +2,7 @@
 
 **Document Version**: 1.0
 **Date**: 2025-10-29
-**Target**: ocserv-modern Development Team
+**Target**: wolfguard Development Team
 **Purpose**: Comprehensive installation and usage guide for binary analysis tools
 
 ---
@@ -16,7 +16,7 @@
 5. [Tool 3: angr Symbolic Execution](#tool-3-angr-symbolic-execution)
 6. [Tool 4: Rec Decompiler (Legacy)](#tool-4-rec-decompiler-legacy)
 7. [Tool Selection Guide](#tool-selection-guide)
-8. [Integration with ocserv-modern](#integration-with-ocserv-modern)
+8. [Integration with wolfguard](#integration-with-wolfguard)
 9. [Security and Legal Considerations](#security-and-legal-considerations)
 10. [References](#references)
 
@@ -24,7 +24,7 @@
 
 ## 1. Executive Summary
 
-This document provides comprehensive guidance for installing and using advanced binary analysis tools to reverse engineer Cisco Secure Client (AnyConnect 5.x+) for compatibility implementation in ocserv-modern. These tools enable:
+This document provides comprehensive guidance for installing and using advanced binary analysis tools to reverse engineer Cisco Secure Client (AnyConnect 5.x+) for compatibility implementation in wolfguard. These tools enable:
 
 1. **Function Identification**: Locate OTP/TOTP, authentication, and protocol handling functions
 2. **Protocol Reverse Engineering**: Understand proprietary X-CSTP-*, X-DTLS-* headers and AggAuth XML
@@ -69,7 +69,7 @@ Basic string extraction and symbol analysis provide limited insight. Advanced de
 | **Collaboration** | ✅ Server mode | ❌ | ❌ | ❌ |
 | **ELF/PE/Mach-O** | ✅ All | ✅ All | ✅ All | ⚠️ PE only |
 | **Learning Curve** | Medium | Low | **High** | Low |
-| **ocserv-modern Fit** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐ (obsolete) |
+| **wolfguard Fit** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐ (obsolete) |
 
 ### Recommendation
 
@@ -481,7 +481,7 @@ int vpn_totp_verify(const char *secret_b32, const char *user_input) {
 }
 ```
 
-**Conversion to C23** (for ocserv-modern):
+**Conversion to C23** (for wolfguard):
 
 ```c
 // src/auth/otp.c - Converted from Ghidra decompilation
@@ -616,7 +616,7 @@ Set to: `300` seconds
 3. **Clean C Output**: More readable than Ghidra for simple functions
 4. **Data Flow Analysis**: Excellent for understanding variable usage
 
-**Use Cases for ocserv-modern**:
+**Use Cases for wolfguard**:
 - Library function analysis (libvpnapi.so)
 - Struct definition recovery (connection state, session context)
 - API endpoint discovery
@@ -741,7 +741,7 @@ struct Eq_20 {
 
 **Step 3**: Annotate with domain knowledge
 
-**Cleaned Struct** (for ocserv-modern):
+**Cleaned Struct** (for wolfguard):
 
 ```c
 // src/vpn_session.h
@@ -858,7 +858,7 @@ int32_t vpn_otp_get_qr_code(
 3. **Vulnerability Discovery**: Automatically find buffer overflows, integer overflows
 4. **Path Explosion Management**: Heuristics to handle complex control flow
 
-**Use Cases for ocserv-modern**:
+**Use Cases for wolfguard**:
 - Find authentication bypass paths
 - Discover input validation bugs
 - Analyze OTP/TOTP generation logic
@@ -1125,7 +1125,7 @@ else:
     print("✓ No buffer overflow detected (input validation present)")
 ```
 
-### 5.6 Integration with ocserv-modern: Test Case Generation
+### 5.6 Integration with wolfguard: Test Case Generation
 
 **Goal**: Generate test cases for fuzzing OTP implementation
 
@@ -1179,7 +1179,7 @@ with open('/opt/analysis/otp_test_cases.json', 'w') as f:
 print(f"Generated {len(test_cases)} test cases")
 ```
 
-**Use in ocserv-modern CI/CD**:
+**Use in wolfguard CI/CD**:
 
 ```c
 // tests/unit/test_otp_fuzzing.c
@@ -1328,7 +1328,7 @@ C:\rec\rec.exe C:\path\to\oldfile.exe
 
 **Phase 4: Implementation** (ongoing)
 1. Convert Ghidra pseudocode to C23
-2. Implement in ocserv-modern with wolfSSL/wolfCrypt
+2. Implement in wolfguard with wolfSSL/wolfCrypt
 3. Validate against Cisco client behavior
 
 ### 7.3 Complementary Tool Usage
@@ -1351,7 +1351,7 @@ python analyze_auth_flow.py
 
 ---
 
-## 8. Integration with ocserv-modern
+## 8. Integration with wolfguard
 
 ### 8.1 Decompiled Code to C23 Conversion Checklist
 
@@ -1472,7 +1472,7 @@ void test_otp_matches_cisco_client(void) {
 
 **United States (DMCA)**:
 - ✅ Reverse engineering for interoperability is **legal** under 17 U.S.C. § 1201(f)
-- ✅ ocserv-modern is an **interoperable implementation**, not a circumvention tool
+- ✅ wolfguard is an **interoperable implementation**, not a circumvention tool
 - ⚠️ Do NOT distribute Cisco binaries or proprietary code
 
 **European Union (Software Directive)**:
@@ -1506,7 +1506,7 @@ If vulnerabilities are discovered during analysis:
 
 1. **Report to Cisco PSIRT**: psirt@cisco.com
 2. **90-Day Disclosure Window**: Allow Cisco time to patch
-3. **Document in ocserv-modern**: Note "This issue was found in Cisco client and reported"
+3. **Document in wolfguard**: Note "This issue was found in Cisco client and reported"
 
 ---
 
@@ -1548,7 +1548,7 @@ If vulnerabilities are discovered during analysis:
 - Ghidra Discord: https://discord.gg/ghidra
 - Stack Overflow: [ghidra], [angr], [reverse-engineering] tags
 
-### 10.3 Related ocserv-modern Documentation
+### 10.3 Related wolfguard Documentation
 
 - **String Analysis**: `/opt/projects/repositories/cisco-secure-client/analysis/REVERSE_ENGINEERING_FINDINGS.md`
 - **OTP Implementation**: `/opt/projects/repositories/cisco-secure-client/analysis/OTP_IMPLEMENTATION.md`
@@ -1557,6 +1557,6 @@ If vulnerabilities are discovered during analysis:
 
 ---
 
-**Document Maintainer**: ocserv-modern Development Team
+**Document Maintainer**: wolfguard Development Team
 **Last Updated**: 2025-10-29
 **Status**: Production Ready

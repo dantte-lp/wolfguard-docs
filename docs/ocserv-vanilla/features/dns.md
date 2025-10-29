@@ -108,7 +108,7 @@ nmcli connection modify vpn ipv4.ignore-auto-dns yes
 ## C23 Implementation
 
 ```c
-// ocserv-modern/src/dns/split_dns.c
+// wolfguard/src/dns/split_dns.c
 
 #include <stdint.h>
 #include <stdbool.h>

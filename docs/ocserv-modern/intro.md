@@ -1,6 +1,6 @@
-# ocserv-modern Documentation
+# wolfguard Documentation
 
-**Project**: ocserv-modern - Modern OpenConnect VPN Server
+**Project**: wolfguard - Modern OpenConnect VPN Server
 **Version**: 2.0.0 (Development)
 **License**: GPLv2+
 **Language**: C23 (ISO/IEC 9899:2024)
@@ -9,7 +9,7 @@
 
 ## Overview
 
-ocserv-modern is a comprehensive refactoring of the OpenConnect VPN server (ocserv), designed to leverage modern cryptographic libraries (wolfSSL ecosystem), contemporary C standards (C23), and event-driven architecture patterns for maximum performance and security.
+wolfguard is a comprehensive refactoring of the OpenConnect VPN server (ocserv), designed to leverage modern cryptographic libraries (wolfSSL ecosystem), contemporary C standards (C23), and event-driven architecture patterns for maximum performance and security.
 
 **Key Features**:
 - 100% Cisco Secure Client 5.x+ compatibility
@@ -149,7 +149,7 @@ Production deployment and operations:
 graph TB
     Client[Cisco Secure Client]
 
-    subgraph "ocserv-modern"
+    subgraph "wolfguard"
         Main[Main Process]
         Workers[Worker Pool<br/>1 per CPU core]
 
@@ -288,13 +288,13 @@ graph TB
 
 ## Project Management
 
-**Note**: Project management documentation remains in the main ocserv-modern repository:
+**Note**: Project management documentation remains in the main wolfguard repository:
 
-- **[Refactoring Plan](https://github.com/dantte-lp/ocserv-modern/blob/master/docs/REFACTORING_PLAN.md)** - Strategic roadmap
-- **[Sprint Tracking](https://github.com/dantte-lp/ocserv-modern/blob/master/docs/todo/CURRENT.md)** - Current sprint tasks
-- **[User Stories](https://github.com/dantte-lp/ocserv-modern/blob/master/docs/agile/BACKLOG.md)** - Feature backlog
-- **[Releases](https://github.com/dantte-lp/ocserv-modern/tree/master/docs/releases)** - Release notes
-- **[Sprint History](https://github.com/dantte-lp/ocserv-modern/tree/master/docs/sprints)** - Sprint retrospectives
+- **[Refactoring Plan](https://github.com/dantte-lp/wolfguard/blob/master/docs/REFACTORING_PLAN.md)** - Strategic roadmap
+- **[Sprint Tracking](https://github.com/dantte-lp/wolfguard/blob/master/docs/todo/CURRENT.md)** - Current sprint tasks
+- **[User Stories](https://github.com/dantte-lp/wolfguard/blob/master/docs/agile/BACKLOG.md)** - Feature backlog
+- **[Releases](https://github.com/dantte-lp/wolfguard/tree/master/docs/releases)** - Release notes
+- **[Sprint History](https://github.com/dantte-lp/wolfguard/tree/master/docs/sprints)** - Sprint retrospectives
 
 ---
 
@@ -302,7 +302,7 @@ graph TB
 
 See the main repository for contribution guidelines:
 
-- [CONTRIBUTING.md](https://github.com/dantte-lp/ocserv-modern/blob/master/CONTRIBUTING.md)
+- [CONTRIBUTING.md](https://github.com/dantte-lp/wolfguard/blob/master/CONTRIBUTING.md)
 - [Coding Standards](development/coding-standards.md) - C23 style guide
 - [Testing Guidelines](development/testing.md) - Unit test requirements
 
@@ -312,9 +312,9 @@ See the main repository for contribution guidelines:
 
 ### Official Resources
 
-- **Repository**: https://github.com/dantte-lp/ocserv-modern
-- **Issue Tracker**: https://github.com/dantte-lp/ocserv-modern/issues
-- **Discussions**: https://github.com/dantte-lp/ocserv-modern/discussions
+- **Repository**: https://github.com/dantte-lp/wolfguard
+- **Issue Tracker**: https://github.com/dantte-lp/wolfguard/issues
+- **Discussions**: https://github.com/dantte-lp/wolfguard/discussions
 
 ### Related Projects
 
@@ -328,9 +328,9 @@ See the main repository for contribution guidelines:
 
 ## License
 
-ocserv-modern is licensed under the GNU General Public License v2 or later (GPLv2+), maintaining compatibility with the original ocserv license.
+wolfguard is licensed under the GNU General Public License v2 or later (GPLv2+), maintaining compatibility with the original ocserv license.
 
-See [LICENSE](https://github.com/dantte-lp/ocserv-modern/blob/master/LICENSE) in the main repository.
+See [LICENSE](https://github.com/dantte-lp/wolfguard/blob/master/LICENSE) in the main repository.
 
 ---
 
@@ -352,7 +352,7 @@ See [LICENSE](https://github.com/dantte-lp/ocserv-modern/blob/master/LICENSE) in
 
 **Documentation Version**: 1.0
 **Last Updated**: 2025-10-29
-**Maintainer**: ocserv-modern documentation team
+**Maintainer**: wolfguard documentation team
 
 ---
 

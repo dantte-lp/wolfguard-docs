@@ -12,7 +12,7 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://ocproto.infra4.dev',
+  url: 'https://docs.wolfguard.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/',
 
@@ -48,7 +48,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/dantte-lp/cisco-secure-client-docs/edit/main/',
+          editUrl: 'https://github.com/dantte-lp/wolfguard-docs/edit/main/',
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           remarkPlugins: [
@@ -165,11 +165,11 @@ const config = {
                 label: '🔧 ocserv (Vanilla)',
               },
               {
-                to: '/docs/ocserv-modern/intro',
-                label: '🚀 ocserv-modern',
+                to: '/docs/wolfguard/intro',
+                label: '🚀 wolfguard',
               },
               {
-                to: '/docs/ocserv-modern/getting-started/quick-start',
+                to: '/docs/wolfguard/getting-started/quick-start',
                 label: 'Quick Start',
               },
             ],
@@ -227,16 +227,16 @@ const config = {
                 to: '/docs/ocserv-vanilla/intro',
               },
               {
-                label: 'ocserv-modern',
-                to: '/docs/ocserv-modern/intro',
+                label: 'wolfguard',
+                to: '/docs/wolfguard/intro',
               },
               {
                 label: 'Quick Start',
-                to: '/docs/ocserv-modern/getting-started/quick-start',
+                to: '/docs/wolfguard/getting-started/quick-start',
               },
               {
                 label: 'Deployment',
-                to: '/docs/ocserv-modern/implementation/deployment',
+                to: '/docs/wolfguard/implementation/deployment',
               },
             ],
           },
@@ -248,8 +248,8 @@ const config = {
                 href: 'https://github.com/dantte-lp/cisco-secure-client-docs',
               },
               {
-                label: 'GitHub - ocserv-modern',
-                href: 'https://github.com/dantte-lp/ocserv-modern',
+                label: 'GitHub - wolfguard',
+                href: 'https://github.com/dantte-lp/wolfguard',
               },
               {
                 label: 'Release Notes',

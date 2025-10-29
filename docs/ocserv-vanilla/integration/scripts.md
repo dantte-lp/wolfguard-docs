@@ -85,7 +85,7 @@ logger "VPN: Removed static routes"
 ## C23 Implementation
 
 ```c
-// ocserv-modern/src/vpn/script_executor.c
+// wolfguard/src/vpn/script_executor.c
 
 #include <sys/wait.h>
 #include <signal.h>

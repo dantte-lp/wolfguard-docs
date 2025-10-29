@@ -335,7 +335,7 @@ Rekey timers suggest periodic key rotation for long-lived tunnels.
 ### 7.1 Cipher Suite Configuration (C23)
 
 ```c
-// File: ocserv-modern/src/crypto/tls_config.c
+// File: wolfguard/src/crypto/tls_config.c
 #include <wolfssl/options.h>
 #include <wolfssl/ssl.h>
 #include <stdint.h>
@@ -492,7 +492,7 @@ int configure_cisco_dtls(WOLFSSL_CTX *dtls_ctx, bool dtls13_enabled) {
 ### 7.2 Elliptic Curve Configuration (C23)
 
 ```c
-// File: ocserv-modern/src/crypto/ecc_config.c
+// File: wolfguard/src/crypto/ecc_config.c
 #include <wolfssl/options.h>
 #include <wolfssl/ssl.h>
 
@@ -549,7 +549,7 @@ int configure_cisco_ecc_curves(
 ### 7.3 Certificate Validation (C23)
 
 ```c
-// File: ocserv-modern/src/crypto/cert_validation.c
+// File: wolfguard/src/crypto/cert_validation.c
 #include <wolfssl/options.h>
 #include <wolfssl/ssl.h>
 #include <wolfssl/wolfcrypt/sha.h>
@@ -740,7 +740,7 @@ int setup_cert_verification(WOLFSSL_CTX *ctx, const char *ca_file, const char *c
 ### 7.4 DTLS Master Secret Export (C23)
 
 ```c
-// File: ocserv-modern/src/crypto/dtls_keying.c
+// File: wolfguard/src/crypto/dtls_keying.c
 #include <wolfssl/options.h>
 #include <wolfssl/ssl.h>
 #include <stdint.h>
@@ -952,7 +952,7 @@ int enable_fips_mode(WOLFSSL_CTX *ctx) {
 - [ ] **Periodic rekey** for long-lived sessions
 - [ ] **CRL and OCSP** certificate validation
 
-### 10.2 wolfSSL Configuration (ocserv-modern)
+### 10.2 wolfSSL Configuration (wolfguard)
 
 **Primary:** wolfSSL 5.8.2+ (GPLv3) - NATIVE API
 **Fallback:** GnuTLS 3.8.9 (legacy backend)
@@ -1003,7 +1003,7 @@ Cisco Secure Client 5.1.2.42 implements modern cryptographic practices with:
 - Robust certificate validation with thumbprint pinning
 - FIPS 140-3 compliance mode
 
-The C23 reference implementations provided in this document are production-ready templates for ocserv-modern integration using **wolfSSL 5.8.2+ Native API**.
+The C23 reference implementations provided in this document are production-ready templates for wolfguard integration using **wolfSSL 5.8.2+ Native API**.
 
 **Migration Complete:**
 1. ✅ All GnuTLS code replaced with wolfSSL Native API
@@ -1022,4 +1022,4 @@ The C23 reference implementations provided in this document are production-ready
 
 **Document Revision:** 1.0
 **Author:** Reverse Engineering Analysis Team
-**Target:** ocserv-modern C23 implementation
+**Target:** wolfguard C23 implementation

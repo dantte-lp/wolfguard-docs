@@ -653,7 +653,7 @@ Virtual Adapter MTU:        ~1400 bytes (typical: 1406)
 ### DPD Implementation
 
 ```c
-// ocserv-modern/src/vpn/dpd.c
+// wolfguard/src/vpn/dpd.c
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -857,7 +857,7 @@ void dpd_periodic_task(struct worker_st *ws) {
 ### Keepalive Implementation
 
 ```c
-// ocserv-modern/src/vpn/keepalive.c
+// wolfguard/src/vpn/keepalive.c
 
 #define KEEPALIVE_INTERVAL_DEFAULT_SEC  20
 #define KEEPALIVE_PACKET                "\x00"  // Single null byte
@@ -930,7 +930,7 @@ void keepalive_periodic_task(struct worker_st *ws) {
 ### Idle and Disconnect Timeout
 
 ```c
-// ocserv-modern/src/vpn/timeout.c
+// wolfguard/src/vpn/timeout.c
 
 #define DEFAULT_IDLE_TIMEOUT_SEC        (30 * 60)  // 30 minutes
 
@@ -1059,7 +1059,7 @@ void reset_timeout_timers(struct worker_st *ws) {
 ### Complete Integration Example
 
 ```c
-// ocserv-modern/src/vpn/vpn-main.c
+// wolfguard/src/vpn/vpn-main.c
 
 // Main VPN event loop integration
 void vpn_worker_main_loop(struct worker_st *ws) {

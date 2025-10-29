@@ -864,7 +864,7 @@ If migration fails or issues occur:
 **Implementation**:
 
 ```c
-// ocserv-modern/src/vpn/split_tunnel.c
+// wolfguard/src/vpn/split_tunnel.c
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -992,7 +992,7 @@ int parse_dynamic_split_tunnel(
 **Implementation**:
 
 ```c
-// ocserv-modern/src/crypto/ikev2_ppk.c
+// wolfguard/src/crypto/ikev2_ppk.c
 
 #include <openssl/evp.h>
 #include <openssl/kdf.h>
@@ -1127,7 +1127,7 @@ int parse_ikev2_ppk_config(
 **Implementation**:
 
 ```c
-// ocserv-modern/src/vpn/split_exclude_failover.c
+// wolfguard/src/vpn/split_exclude_failover.c
 
 #include <stdbool.h>
 #include <time.h>
@@ -1257,7 +1257,7 @@ static void restore_split_exclude_routes(
 **Implementation** (NAM module):
 
 ```c
-// ocserv-modern/src/nam/wpa3_sae.c
+// wolfguard/src/nam/wpa3_sae.c
 
 typedef enum {
     WPA_VERSION_WPA2 = 2,
@@ -1326,7 +1326,7 @@ void handle_transition_disable_indication(wpa_config_t *config) {
 **Implementation**:
 
 ```c
-// ocserv-modern/src/auth/cert_template.c
+// wolfguard/src/auth/cert_template.c
 
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>

@@ -2,7 +2,7 @@
 
 **Document Version**: 1.0
 **Date**: 2025-10-29
-**Target Audience**: ocserv-modern Development Team
+**Target Audience**: wolfguard Development Team
 **Purpose**: Step-by-step practical workflow for reverse engineering and implementation
 
 ---
@@ -27,7 +27,7 @@
 
 ## 1. Overview
 
-This document provides a **practical, hands-on workflow** for reverse engineering Cisco Secure Client binaries and implementing compatible functionality in ocserv-modern. The workflow is optimized for efficiency, combining multiple tools at each phase.
+This document provides a **practical, hands-on workflow** for reverse engineering Cisco Secure Client binaries and implementing compatible functionality in wolfguard. The workflow is optimized for efficiency, combining multiple tools at each phase.
 
 ### Workflow Summary
 
@@ -62,7 +62,7 @@ This document provides a **practical, hands-on workflow** for reverse engineerin
                      v
 ┌─────────────────────────────────────────────────────────┐
 │              PHASE 5: C23 Implementation                 │
-│          (Convert to ocserv-modern code)                 │
+│          (Convert to wolfguard code)                 │
 │                     ⏱ 2-4 hours                          │
 └────────────────────┬────────────────────────────────────┘
                      │
@@ -367,7 +367,7 @@ typedef struct cstp_config {
 **Action**: Commit structs to Git
 
 ```bash
-cd /opt/projects/repositories/ocserv-modern
+cd /opt/projects/repositories/wolfguard
 cp /opt/analysis/decompiled_c/vpn_structs.h src/vpn/
 git add src/vpn/vpn_structs.h
 git commit -m "Add VPN session structs from reverse engineering"
@@ -797,7 +797,7 @@ print(f"Generated {len(test_cases)} test cases")
 
 ### 8.1 Conversion Checklist
 
-From Ghidra pseudocode to ocserv-modern C23:
+From Ghidra pseudocode to wolfguard C23:
 
 **Checklist**:
 - [ ] Replace generic types (`int` → `int32_t`, `uint` → `uint32_t`)
@@ -808,7 +808,7 @@ From Ghidra pseudocode to ocserv-modern C23:
 - [ ] Add comprehensive error handling
 - [ ] Use `constexpr` for constants
 - [ ] Add function documentation (Doxygen style)
-- [ ] Follow ocserv-modern coding style (clang-format)
+- [ ] Follow wolfguard coding style (clang-format)
 
 ### 8.2 Example Conversion
 
@@ -832,7 +832,7 @@ uint32_t vpn_totp_generate(otp_context *ctx, time_t timestamp) {
 }
 ```
 
-**Output**: ocserv-modern C23
+**Output**: wolfguard C23
 
 ```c
 // src/auth/totp.c
@@ -901,9 +901,9 @@ totp_generate(const uint8_t *secret, size_t secret_len, time_t timestamp)
 }
 ```
 
-### 8.3 Integration with ocserv-modern
+### 8.3 Integration with wolfguard
 
-**File**: `/opt/projects/repositories/ocserv-modern/src/auth/totp.h`
+**File**: `/opt/projects/repositories/wolfguard/src/auth/totp.h`
 
 ```c
 // src/auth/totp.h
@@ -960,7 +960,7 @@ auth_lib = static_library(
 
 ### 9.1 Unit Tests
 
-**File**: `/opt/projects/repositories/ocserv-modern/tests/unit/test_totp.c`
+**File**: `/opt/projects/repositories/wolfguard/tests/unit/test_totp.c`
 
 ```c
 // tests/unit/test_totp.c
@@ -1037,7 +1037,7 @@ int main() {
 **Run**:
 
 ```bash
-cd /opt/projects/repositories/ocserv-modern
+cd /opt/projects/repositories/wolfguard
 meson setup build
 cd build
 meson test test_totp
@@ -1047,7 +1047,7 @@ meson test test_totp
 
 **Setup**:
 1. Install Cisco Secure Client on test machine
-2. Configure ocserv-modern to use TOTP
+2. Configure wolfguard to use TOTP
 3. Provision secret in both systems
 
 **Test Script** (`tests/integration/test_cisco_compatibility.sh`):
@@ -1144,7 +1144,7 @@ python3 /opt/analysis/angr_scripts/verify_totp_auth.py
 ### Hours 7-8: Implementation
 
 ```bash
-cd /opt/projects/repositories/ocserv-modern
+cd /opt/projects/repositories/wolfguard
 
 # Convert to C23
 vim src/auth/totp.c
@@ -1186,7 +1186,7 @@ meson test test_totp
 - Are there rate limiting controls? (checked: yes, at higher layer)
 
 **Next Steps**:
-- Implement in ocserv-modern with wolfCrypt
+- Implement in wolfguard with wolfCrypt
 - Add unit tests
 - Validate against Cisco client
 ```
@@ -1201,7 +1201,7 @@ git add decompiled_c/ notes/ ghidra_scripts/
 git commit -m "Add TOTP decompilation findings"
 
 # Production code in separate repo
-cd /opt/projects/repositories/ocserv-modern
+cd /opt/projects/repositories/wolfguard
 git add src/auth/totp.c tests/unit/test_totp.c
 git commit -m "Implement TOTP authentication (RFC 6238)"
 ```
@@ -1324,7 +1324,7 @@ fi
 
 ## Conclusion
 
-This workflow provides a systematic approach to reverse engineering Cisco Secure Client and implementing compatible functionality in ocserv-modern. By following these steps, developers can:
+This workflow provides a systematic approach to reverse engineering Cisco Secure Client and implementing compatible functionality in wolfguard. By following these steps, developers can:
 
 1. **Efficiently analyze** binaries using the right tool for each phase
 2. **Validate security** of decompiled code
@@ -1337,10 +1337,10 @@ This workflow provides a systematic approach to reverse engineering Cisco Secure
 **Next Steps**:
 - Follow this workflow for remaining critical features (X-CSTP headers, DTLS handling)
 - Document findings in `/opt/analysis/notes/`
-- Commit C23 implementations to ocserv-modern repository
+- Commit C23 implementations to wolfguard repository
 
 ---
 
 **Document Status**: Production Ready
-**Maintained By**: ocserv-modern Development Team
+**Maintained By**: wolfguard Development Team
 **Last Updated**: 2025-10-29

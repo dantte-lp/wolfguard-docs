@@ -4,7 +4,7 @@
 
 Successfully deployed Docusaurus documentation site for the OpenConnect Protocol (Cisco Secure Client 5.x+ reverse engineering documentation).
 
-**Live URL**: https://ocproto.infra4.dev
+**Live URL**: https://docs.wolfguard.io
 **Container**: `ocproto-docs`
 **Network**: `traefik-public`
 **Internal Port**: 8080
@@ -14,7 +14,7 @@ Successfully deployed Docusaurus documentation site for the OpenConnect Protocol
 ## Project Structure
 
 ```
-/opt/projects/repositories/cisco-secure-client-docs/
+/opt/projects/repositories/wolfguard-docs/
 ├── docs/                          # 24 Markdown documentation files
 │   ├── intro.md                   # Landing page
 │   ├── getting-started/           # Quick start guides (2 files)
@@ -119,13 +119,13 @@ traefik.enable: true
 traefik.docker.network: traefik-public
 
 # HTTPS Router
-traefik.http.routers.ocproto.rule: Host(`ocproto.infra4.dev`)
+traefik.http.routers.ocproto.rule: Host(`docs.wolfguard.io`)
 traefik.http.routers.ocproto.entrypoints: https
 traefik.http.routers.ocproto.tls: true
 traefik.http.routers.ocproto.tls.certresolver: cloudflare
 
 # HTTP Router (redirect to HTTPS handled by Traefik global config)
-traefik.http.routers.ocproto-http.rule: Host(`ocproto.infra4.dev`)
+traefik.http.routers.ocproto-http.rule: Host(`docs.wolfguard.io`)
 traefik.http.routers.ocproto-http.entrypoints: http
 
 # Service Configuration
@@ -236,7 +236,7 @@ Created automated fix script: `fix-mdx.sh`
 
 ## DNS Configuration
 
-**Required**: Add DNS record for `ocproto.infra4.dev`
+**Required**: Add DNS record for `docs.wolfguard.io`
 
 ```
 Type: A
@@ -280,7 +280,7 @@ curl -I http://10.89.0.238:8080/  # Should return 301 to /docs/
 curl -s http://10.89.0.238:8080/docs/ | head
 
 # HTTPS test (via Traefik)
-curl -I https://ocproto.infra4.dev
+curl -I https://docs.wolfguard.io
 ```
 
 ### Traefik Verification
@@ -293,7 +293,7 @@ https://tr-01.infra4.dev
 curl -s https://tr-01.infra4.dev/api/http/routers | grep ocproto
 
 # Check certificate
-openssl s_client -connect ocproto.infra4.dev:443 -servername ocproto.infra4.dev
+openssl s_client -connect docs.wolfguard.io:443 -servername docs.wolfguard.io
 ```
 
 ---
@@ -379,17 +379,17 @@ podman exec ocproto-docs ls -la /usr/share/nginx/html/
 
 ## Project Links
 
-- **Live Site**: https://ocproto.infra4.dev
-- **Source Repository**: `/opt/projects/repositories/cisco-secure-client-docs/`
+- **Live Site**: https://docs.wolfguard.io
+- **Source Repository**: `/opt/projects/repositories/wolfguard-docs/`
 - **Analysis Docs**: `/opt/projects/repositories/cisco-secure-client/analysis/`
-- **ocserv-modern**: `/opt/projects/repositories/ocserv-modern/`
+- **wolfguard**: `/opt/projects/repositories/wolfguard/`
 - **Traefik Config**: `/opt/projects/repositories/traefik/`
 
 ---
 
 ## Success Metrics
 
-- [x] Site accessible at https://ocproto.infra4.dev
+- [x] Site accessible at https://docs.wolfguard.io
 - [x] All 24 documentation pages render correctly
 - [x] Navigation hierarchy functional
 - [x] HTTPS with valid Let's Encrypt certificate

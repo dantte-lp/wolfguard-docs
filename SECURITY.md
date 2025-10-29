@@ -10,12 +10,12 @@
 
 If you discover a security vulnerability within:
 - **OpenConnect Protocol Documentation**: Report via email
-- **ocserv-modern**: Use https://github.com/dantte-lp/ocserv-modern/security
+- **wolfguard**: Use https://github.com/dantte-lp/wolfguard/security
 - **ocserv (vanilla)**: Use https://gitlab.com/openconnect/ocserv/-/issues
 
 ### For Protocol Vulnerabilities
 
-Email: security@ocproto.infra4.dev (PGP preferred)
+Email: security@docs.wolfguard.io (PGP preferred)
 
 **DO NOT** create public issues for security vulnerabilities.
 

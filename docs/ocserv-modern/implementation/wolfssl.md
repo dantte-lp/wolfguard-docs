@@ -3,7 +3,7 @@
 
 **Document Version:** 1.0
 **Date:** 2025-10-29
-**Target:** ocserv-modern (C23, ISO/IEC 9899:2024)
+**Target:** wolfguard (C23, ISO/IEC 9899:2024)
 **TLS Library:** wolfSSL 5.8.2+ (GPLv3) - **NATIVE API ONLY**
 **Crypto Library:** wolfCrypt (bundled with wolfSSL)
 **Purpose:** Complete migration from GnuTLS to wolfSSL Native API
@@ -28,9 +28,9 @@
 
 ## Executive Summary
 
-ocserv-modern uses **wolfSSL 5.8.2+ Native API** as the primary TLS/DTLS/crypto library for 100% Cisco Secure Client 5.x+ compatibility. This document provides comprehensive implementation guidance for the complete migration from GnuTLS/OpenSSL to wolfSSL.
+wolfguard uses **wolfSSL 5.8.2+ Native API** as the primary TLS/DTLS/crypto library for 100% Cisco Secure Client 5.x+ compatibility. This document provides comprehensive implementation guidance for the complete migration from GnuTLS/OpenSSL to wolfSSL.
 
-### Why wolfSSL for ocserv-modern?
+### Why wolfSSL for wolfguard?
 
 | Feature | wolfSSL 5.8.2+ | GnuTLS 3.8.9 | OpenSSL 3.x |
 |---------|----------------|--------------|-------------|
@@ -59,7 +59,7 @@ ocserv-modern uses **wolfSSL 5.8.2+ Native API** as the primary TLS/DTLS/crypto 
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│           ocserv-modern (C23 Application)            │
+│           wolfguard (C23 Application)            │
 └───────────────────┬──────────────────────────────────┘
                     │
     ┌───────────────┴───────────────┐
@@ -84,7 +84,7 @@ ocserv-modern uses **wolfSSL 5.8.2+ Native API** as the primary TLS/DTLS/crypto 
 
 ### Protocol Support
 
-| Protocol | Version | wolfSSL Support | ocserv-modern Usage |
+| Protocol | Version | wolfSSL Support | wolfguard Usage |
 |----------|---------|-----------------|---------------------|
 | **TLS** | 1.3 | ✅ Full (RFC 8446) | Primary (HTTPS tunnel) |
 | **TLS** | 1.2 | ✅ Full (RFC 5246) | Fallback |
@@ -533,7 +533,7 @@ setup_wolfssl_ctx_openconnect(WOLFSSL_CTX *ctx)
     wolfSSL_CTX_set_session_cache_mode(ctx, WOLFSSL_SESS_CACHE_SERVER);
 
     // Set session ID context (required for proper session caching)
-    const unsigned char session_id_ctx[] = "ocserv-modern";
+    const unsigned char session_id_ctx[] = "wolfguard";
     wolfSSL_CTX_set_session_id_context(ctx, session_id_ctx, sizeof(session_id_ctx) - 1);
 
     // Set certificate and private key
@@ -1048,7 +1048,7 @@ create_ssl_from_pool(ssl_context_pool_t *pool, int fd, bool is_dtls)
 ### Memory Management with mimalloc
 
 ```c
-// C23: Integrate wolfSSL with mimalloc (ocserv-modern allocator)
+// C23: Integrate wolfSSL with mimalloc (wolfguard allocator)
 #include <mimalloc.h>
 
 // wolfSSL custom allocator functions
@@ -1149,7 +1149,7 @@ Expected performance improvements with wolfSSL + libuv + mimalloc:
 //
 // Complete OpenConnect TLS Server
 // wolfSSL 5.8.2+ Native API with C23
-// File: ocserv-modern/src/vpn/tls_server.c
+// File: wolfguard/src/vpn/tls_server.c
 //
 
 #include <wolfssl/options.h>
@@ -1402,7 +1402,7 @@ int main(int argc, char *argv[])
 //
 // TOTP Implementation using wolfCrypt
 // Google Authenticator Compatible
-// File: ocserv-modern/src/auth/totp_wolfcrypt.c
+// File: wolfguard/src/auth/totp_wolfcrypt.c
 //
 
 #include <wolfssl/wolfcrypt/hmac.h>
@@ -1738,7 +1738,7 @@ if (bytes_read <= 0) {
 **wolfSentry** is a lightweight, embeddable Intrusion Detection and Prevention System (IDPS) and firewall engine developed by wolfSSL Inc. It provides real-time network traffic filtering, connection tracking, rate limiting, and threat mitigation capabilities specifically designed for embedded and high-performance applications.
 
 **Version**: v1.6.3 (January 2025)
-**License**: GPLv2 (compatible with ocserv-modern GPLv2+)
+**License**: GPLv2 (compatible with wolfguard GPLv2+)
 **Repository**: https://github.com/wolfSSL/wolfsentry
 **Documentation**: https://wolfssl.com/documentation/manuals/wolfsentry/
 
@@ -1751,9 +1751,9 @@ if (bytes_read <= 0) {
 5. **Geographic Filtering**: Block or allow traffic based on IP geolocation (with GeoIP database)
 6. **Low Overhead**: ~5-10% CPU overhead, 10-50 KB memory footprint, &lt;1ms latency per decision
 
-#### Why wolfSentry for ocserv-modern?
+#### Why wolfSentry for wolfguard?
 
-Cisco Secure Client reverse engineering reveals that Cisco's AnyConnect server implements sophisticated connection rate limiting, IP blacklisting, and per-user session management. wolfSentry provides these capabilities for ocserv-modern:
+Cisco Secure Client reverse engineering reveals that Cisco's AnyConnect server implements sophisticated connection rate limiting, IP blacklisting, and per-user session management. wolfSentry provides these capabilities for wolfguard:
 
 - **Fix Issue #372**: Properly enforce `max-same-clients` (per-user connection limits)
 - **Brute-Force Protection**: Rate limit authentication attempts per IP
@@ -1769,7 +1769,7 @@ Cisco Secure Client reverse engineering reveals that Cisco's AnyConnect server i
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                   ocserv-modern VPN Server                   │
+│                   wolfguard VPN Server                   │
 │                                                               │
 │  ┌─────────────────┐           ┌──────────────────────┐     │
 │  │  Connection     │  Query    │   wolfSentry Engine  │     │
@@ -1988,7 +1988,7 @@ vpn_rate_limit_shutdown(struct wolfsentry_context **ctx)
 }
 ```
 
-**Integration with ocserv-modern main loop**:
+**Integration with wolfguard main loop**:
 
 ```c
 // src/main-vpn.c (simplified)
@@ -2220,7 +2220,7 @@ vpn_geofilter_check_country(struct wolfsentry_context *ctx,
 **Configuration File Format** (`/etc/ocserv/geofilter.conf`):
 
 ```ini
-# Geographic filtering rules for ocserv-modern
+# Geographic filtering rules for wolfguard
 # Format: <action> <subnet> <description>
 
 # Block Tor exit nodes
@@ -3174,7 +3174,7 @@ void benchmark_connection_check(void) {
 
 ### 11.8 Complete C23 Implementation Example
 
-Below is a **production-ready** example integrating wolfSentry into ocserv-modern's main VPN connection handler:
+Below is a **production-ready** example integrating wolfSentry into wolfguard's main VPN connection handler:
 
 ```c
 // src/vpn_connection_handler.c
@@ -3556,9 +3556,9 @@ vpn_security_shutdown(void)
 - **API Reference**: https://github.com/wolfSSL/wolfsentry/tree/master/doc
 - **Examples**: https://github.com/wolfSSL/wolfsentry/tree/master/examples
 
-#### Related ocserv-modern Documentation
+#### Related wolfguard Documentation
 
-- **wolfSSL Ecosystem**: `/opt/projects/repositories/ocserv-modern/docs/architecture/WOLFSSL_ECOSYSTEM.md`
+- **wolfSSL Ecosystem**: `/opt/projects/repositories/wolfguard/docs/architecture/WOLFSSL_ECOSYSTEM.md`
 - **Security Architecture**: TBD (Sprint 5)
 - **Issue #372 (max-same-clients)**: https://gitlab.com/openconnect/ocserv/-/issues/372
 
@@ -3569,7 +3569,7 @@ vpn_security_shutdown(void)
 
 ---
 
-**Section 11 Complete**: wolfSentry integration provides production-ready IDPS/firewall capabilities for ocserv-modern, fixing Issue #372 and adding DoS protection.
+**Section 11 Complete**: wolfSentry integration provides production-ready IDPS/firewall capabilities for wolfguard, fixing Issue #372 and adding DoS protection.
 
 ---
 
@@ -3592,7 +3592,7 @@ vpn_security_shutdown(void)
 - **RFC 5705**: TLS Keying Material Exporter
 - **RFC 6238**: TOTP (Time-Based OTP)
 
-### ocserv-modern Integration Points
+### wolfguard Integration Points
 
 - **Architecture**: `/opt/projects/repositories/README.md`
 - **Crypto Analysis**: `/opt/projects/repositories/cisco-secure-client/analysis/CRYPTO_ANALYSIS.md`
@@ -3602,6 +3602,6 @@ vpn_security_shutdown(void)
 ---
 
 **Document Version:** 1.0
-**Author:** ocserv-modern Development Team
+**Author:** wolfguard Development Team
 **Date:** 2025-10-29
 **Status:** Production Ready

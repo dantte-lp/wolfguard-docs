@@ -3,13 +3,13 @@
 **Document Version**: 1.0
 **Date**: 2025-10-29
 **wolfSentry Version**: 1.6.3
-**Project**: ocserv-modern v2.0.0
+**Project**: wolfguard v2.0.0
 
 ---
 
 ## Executive Summary
 
-wolfSentry is wolfSSL's embedded Intrusion Detection and Prevention System (IDPS) and firewall engine, designed specifically for resource-constrained and embedded environments. This document describes how wolfSentry integrates into ocserv-modern to provide enterprise-grade security controls with minimal overhead.
+wolfSentry is wolfSSL's embedded Intrusion Detection and Prevention System (IDPS) and firewall engine, designed specifically for resource-constrained and embedded environments. This document describes how wolfSentry integrates into wolfguard to provide enterprise-grade security controls with minimal overhead.
 
 **Key Benefits**:
 - Dynamic firewall rules (IP/port/protocol filtering)
@@ -18,7 +18,7 @@ wolfSentry is wolfSSL's embedded Intrusion Detection and Prevention System (IDPS
 - DDoS mitigation
 - Minimal footprint: 64 KB code + 32 KB RAM
 - Pure C implementation (zero C++ dependencies)
-- Perfect fit for ocserv-modern's architecture
+- Perfect fit for wolfguard's architecture
 
 ---
 
@@ -48,12 +48,12 @@ wolf Sentry was designed from the ground up to function in resource-constrained,
 **Target Environments**:
 - FreeRTOS, Nucleus, NUTTX, Zephyr, VxWorks, Green Hills Integrity
 - ARM and other common embedded CPUs/MCUs
-- Linux user-space applications (including ocserv-modern)
+- Linux user-space applications (including wolfguard)
 - lwIP-based network stacks
 
 ---
 
-## Why wolfSentry for ocserv-modern?
+## Why wolfSentry for wolfguard?
 
 ### Perfect Architectural Fit
 
@@ -103,7 +103,7 @@ wolf Sentry was designed from the ground up to function in resource-constrained,
 graph TB
     Client[Cisco Secure Client]
 
-    subgraph "ocserv-modern"
+    subgraph "wolfguard"
         Main[Main Process]
         Workers[Worker Pool]
 
@@ -382,7 +382,7 @@ int geoip_filter_action(
 
 ---
 
-## Implementation in ocserv-modern
+## Implementation in wolfguard
 
 ### Initialization (C23)
 
@@ -1323,8 +1323,8 @@ done
    - lwIP integration
    - Linux user-space examples
 
-7. **ocserv-modern Architecture**
-   `/opt/projects/repositories/cisco-secure-client-docs/docs/ocserv-modern/architecture/modern-vpn-design.md`
+7. **wolfguard Architecture**
+   `/opt/projects/repositories/wolfguard-docs/docs/wolfguard/architecture/modern-vpn-design.md`
    - Event-driven architecture
    - libuv integration patterns
    - wolfSSL usage
@@ -1333,7 +1333,7 @@ done
 
 ## Summary
 
-wolfSentry provides ocserv-modern with enterprise-grade IDPS capabilities while maintaining the project's core principles:
+wolfSentry provides wolfguard with enterprise-grade IDPS capabilities while maintaining the project's core principles:
 
 - **Pure C**: No C++ dependencies
 - **Minimal Footprint**: 64 KB code + 32 KB RAM
@@ -1351,13 +1351,13 @@ wolfSentry provides ocserv-modern with enterprise-grade IDPS capabilities while 
 - Port scanning detection
 - Real-time threat response
 
-wolfSentry is the ideal IDPS solution for ocserv-modern, providing production-ready security features without compromising performance or architectural purity.
+wolfSentry is the ideal IDPS solution for wolfguard, providing production-ready security features without compromising performance or architectural purity.
 
 ---
 
 **Document Status**: Architecture Reference
 **Implementation Status**: Planned for Sprint 8+
-**Maintainer**: ocserv-modern security team
+**Maintainer**: wolfguard security team
 **Review Schedule**: Quarterly
 **Next Review**: 2026-01-29
 

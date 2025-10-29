@@ -2,7 +2,7 @@
 
 ## Status:  DEPLOYED
 
-**URL**: https://ocproto.infra4.dev
+**URL**: https://docs.wolfguard.io
 **Kroki Local**: http://localhost:8000
 
 ## Infrastructure
@@ -47,7 +47,7 @@
 ## Important Fix: Redirect Issue
 
 ### Problem
-Initially, accessing https://ocproto.infra4.dev redirected to https://ocproto.infra4.dev:8080/docs/ with the internal port :8080 visible in the URL.
+Initially, accessing https://docs.wolfguard.io redirected to https://docs.wolfguard.io:8080/docs/ with the internal port :8080 visible in the URL.
 
 ### Root Cause
 nginx was using HTTP 301 redirects which included the backend port (8080) in the Location header. Multiple attempts to configure nginx failed:

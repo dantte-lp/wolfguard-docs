@@ -5,7 +5,7 @@
 **Document Version**: 1.0
 **Date**: 2025-10-29
 **Author**: Reverse Engineering Analysis
-**Purpose**: Comprehensive comparison of Cisco Secure Client versions for ocserv-modern compatibility
+**Purpose**: Comprehensive comparison of Cisco Secure Client versions for wolfguard compatibility
 
 ## Executive Summary
 
@@ -196,7 +196,7 @@ DART is a comprehensive diagnostic and reporting system that:
 </os>
 ```
 
-#### Implementation Notes for ocserv-modern
+#### Implementation Notes for wolfguard
 - **Impact**: None - DART is client-side only
 - **Compatibility**: No server-side changes required
 - **Recommendation**: Document DART's existence for troubleshooting guides
@@ -239,7 +239,7 @@ csc_iseagentd (daemon)
           +-- libacisectrl.so (control interface)
 ```
 
-#### Implementation Notes for ocserv-modern
+#### Implementation Notes for wolfguard
 - **Impact**: Server must support ISE posture protocol if enabled
 - **Compatibility**: Falls back to legacy posture if ISE unavailable
 - **Recommendation**: Implement basic ISE posture responses for compatibility
@@ -284,7 +284,7 @@ csc_iseagentd (daemon)
    - Protocol analysis
    - Bandwidth monitoring
 
-#### Implementation Notes for ocserv-modern
+#### Implementation Notes for wolfguard
 - **Impact**: None - NVM is client-side only
 - **Compatibility**: No server changes required
 - **Note**: Clients may report additional telemetry data
@@ -364,10 +364,10 @@ DTLS/CDT
 ```
 No DTLS 1.3 strings found, suggesting not yet implemented.
 
-#### Implementation Notes for ocserv-modern
+#### Implementation Notes for wolfguard
 - **Impact**: HIGH - Must support TLS 1.3 for modern clients
 - **Compatibility**: Client negotiates down to TLS 1.2 if server doesn't support 1.3
-- **Recommendation**: Implement TLS 1.3 support in ocserv-modern
+- **Recommendation**: Implement TLS 1.3 support in wolfguard
 - **Priority**: HIGH (essential for 5.1.12.146 compatibility)
 - **wolfSSL**: Ensure wolfSSL 5.x+ with TLS 1.3 enabled
 
@@ -407,7 +407,7 @@ X-CSTP-Base-MTU:
 
 **Count**: 22 headers in both versions
 
-**Analysis**: CSTP protocol completely stable, no changes required in ocserv-modern.
+**Analysis**: CSTP protocol completely stable, no changes required in wolfguard.
 
 ---
 
@@ -606,7 +606,7 @@ _ZN9HostEntry18getIPsecAuthMethodEv
 3. Better encapsulation
 4. Fewer exported symbols = smaller attack surface
 
-**Impact on ocserv-modern**:
+**Impact on wolfguard**:
 - No impact (server doesn't use client library)
 - Indicates more stable client architecture
 - Cleaner API suggests better testing
@@ -788,7 +788,7 @@ All functionality from 5.1.2.42 retained in 5.1.12.146.
 
 ---
 
-## Implementation Impact for ocserv-modern
+## Implementation Impact for wolfguard
 
 ### Required Updates
 
@@ -874,7 +874,7 @@ if (cert_validation_failed) {
 **Benefit**: Better troubleshooting
 
 **Action**:
-- Document DART's existence in ocserv-modern documentation
+- Document DART's existence in wolfguard documentation
 - Suggest users run DART when reporting issues
 - No server-side DART support needed (client-side only)
 
@@ -882,7 +882,7 @@ if (cert_validation_failed) {
 
 ## Compatibility Matrix
 
-| Feature | 5.1.2.42 | 5.1.12.146 | ocserv-modern Status | Priority |
+| Feature | 5.1.2.42 | 5.1.12.146 | wolfguard Status | Priority |
 |---------|----------|------------|----------------------|----------|
 | **Core Protocol** |
 | CSTP v1 | Yes | Yes | Implemented | - |
@@ -919,7 +919,7 @@ if (cert_validation_failed) {
 ### Legend
 - **Yes**: Feature supported
 - **No**: Feature not supported
-- **Implemented**: Working in ocserv-modern
+- **Implemented**: Working in wolfguard
 - **Partial**: Partially implemented
 - **Planned**: On roadmap
 - **N/A**: Not applicable (client-side only)
@@ -1005,7 +1005,7 @@ openconnect --protocol=anyconnect -u testuser https://server.example.com
 
 CLIENT_5_1_2="/path/to/5.1.2.42/vpn"
 CLIENT_5_1_12="/path/to/5.1.12.146/vpn"
-SERVER="https://ocserv-modern.example.com"
+SERVER="https://wolfguard.example.com"
 
 for CLIENT in "$CLIENT_5_1_2" "$CLIENT_5_1_12"; do
     echo "Testing with $CLIENT"
@@ -1088,7 +1088,7 @@ echo "Throughput: 5.1.2=${throughput_5_1_2} Mbps vs 5.1.12=${throughput_5_1_12} 
 - Document rollback procedure
 - Test rollback in lab environment
 
-#### For ocserv-modern Deployment
+#### For wolfguard Deployment
 
 **Server Upgrade Path**:
 1. **Phase 1**: Update to wolfSSL 5.x with TLS 1.3
@@ -1098,7 +1098,7 @@ echo "Throughput: 5.1.2=${throughput_5_1_2} Mbps vs 5.1.12=${throughput_5_1_12} 
    make && make install
    ```
 
-2. **Phase 2**: Update ocserv-modern TLS configuration
+2. **Phase 2**: Update wolfguard TLS configuration
    ```conf
    # ocserv.conf
    tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1"
@@ -1248,7 +1248,7 @@ echo "Throughput: 5.1.2=${throughput_5_1_2} Mbps vs 5.1.12=${throughput_5_1_12} 
 
 ## Known Issues and Limitations
 
-### Client-Side Issues (Not ocserv-modern)
+### Client-Side Issues (Not wolfguard)
 
 #### 1. DART Module
 - **Issue**: DART is client-side only
@@ -1344,7 +1344,7 @@ Compiler: clang 18.1.8 (Red Hat 18.1.8-1.module+el8.10.0+22061+3612b2ba)
 4. ECDHE-ECDSA-AES256-GCM-SHA384 (TLS 1.2)
 ... (full list in TLS 1.3 Support section)
 
-**Recommended ocserv-modern Configuration**:
+**Recommended wolfguard Configuration**:
 ```conf
 # /etc/ocserv/ocserv.conf
 
@@ -1467,7 +1467,7 @@ make install
 
 #### Pre-Deployment Testing
 
-- [ ] Build ocserv-modern with wolfSSL 5.7.2+
+- [ ] Build wolfguard with wolfSSL 5.7.2+
 - [ ] Verify TLS 1.3 cipher suites available
 - [ ] Test TLS 1.3 handshake with openssl s_client
 - [ ] Test TLS 1.2 fallback
@@ -1536,7 +1536,7 @@ make install
 For questions about this analysis:
 - Review existing documentation in `/opt/projects/repositories/cisco-secure-client/analysis/`
 - Check decompiled code in `/opt/projects/repositories/cisco-secure-client/decompiled/`
-- Consult ocserv-modern implementation team
+- Consult wolfguard implementation team
 
 ---
 

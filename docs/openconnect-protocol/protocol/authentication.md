@@ -124,7 +124,7 @@ CSWSofTokenIfc::GeneratePasscode(const string&, const string&, string&)
 ### 2.3 C23 Reference Implementation (RSA-compatible)
 
 ```c
-// File: ocserv-modern/src/auth/rsa_securid.c
+// File: wolfguard/src/auth/rsa_securid.c
 #include <stdint.h>
 #include <time.h>
 #include <string.h>
@@ -236,7 +236,7 @@ where:
 ### 3.3 C23 TOTP Implementation (Google Authenticator Compatible)
 
 ```c
-// File: ocserv-modern/src/auth/totp.c
+// File: wolfguard/src/auth/totp.c
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
@@ -715,7 +715,7 @@ Client                          Server
 ### 4.4 C23 AggAuth Parser (Simplified)
 
 ```c
-// File: ocserv-modern/src/auth/aggauth.c
+// File: wolfguard/src/auth/aggauth.c
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <stdbool.h>
@@ -872,7 +872,7 @@ CDnldrArgsTlv::SetSessionToken(const string&)
 ### 5.3 C23 Token Management
 
 ```c
-// File: ocserv-modern/src/auth/session_token.c
+// File: wolfguard/src/auth/session_token.c
 #include <stdint.h>
 #include <string.h>
 #include <openssl/evp.h>
@@ -1011,7 +1011,7 @@ mfa-methods = "totp,rsa,certificate"
 ### 6.3 C23 Authentication Module Interface
 
 ```c
-// File: ocserv-modern/src/auth/auth_interface.h
+// File: wolfguard/src/auth/auth_interface.h
 #ifndef AUTH_INTERFACE_H
 #define AUTH_INTERFACE_H
 
@@ -1136,7 +1136,7 @@ void test_totp_rfc6238() {
 ### 8.1 TOTP Secret Storage
 
 ```c
-// File: ocserv-modern/src/auth/secure_storage.c
+// File: wolfguard/src/auth/secure_storage.c
 #include <wolfssl/wolfcrypt/aes.h>
 #include <wolfssl/wolfcrypt/random.h>
 
@@ -1307,4 +1307,4 @@ The C23 reference implementations provided are production-ready and can be integ
 
 **Document Revision:** 1.0
 **Author:** Reverse Engineering Analysis Team
-**Target:** ocserv-modern C23 implementation
+**Target:** wolfguard C23 implementation

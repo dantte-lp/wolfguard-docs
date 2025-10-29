@@ -2,7 +2,7 @@
 
 **Analysis Date:** 2025-10-29 (Updated)
 **Analysis Scope:** 13+ Cisco documentation sources + Advanced binary analysis
-**Target:** ocserv-modern (C23) implementation
+**Target:** wolfguard (C23) implementation
 **TLS Library:** wolfSSL 5.8.2+ Native API (GPLv3)
 **Decompilation Tools:** Ghidra 11.3, Reko 0.12.0, angr 9.2
 **Status:** COMPLETE - Production-Ready with wolfSSL + Advanced Binary Analysis
@@ -13,7 +13,7 @@
 
 ### Three New Comprehensive Guides
 
-ocserv-modern development team now has **complete reverse engineering documentation** with advanced decompilation tools and workflows.
+wolfguard development team now has **complete reverse engineering documentation** with advanced decompilation tools and workflows.
 
 #### 1. DECOMPILATION_TOOLS.md (~8,500 lines)
 
@@ -104,7 +104,7 @@ ocserv-modern development team now has **complete reverse engineering documentat
 
 #### 3. DECOMPILATION_WORKFLOW.md (~5,000 lines)
 
-**Purpose**: Step-by-step practical workflow for ocserv-modern developers
+**Purpose**: Step-by-step practical workflow for wolfguard developers
 
 **6-Phase Workflow** (8-14 hours per feature):
 
@@ -161,7 +161,7 @@ ocserv-modern development team now has **complete reverse engineering documentat
 
 **NEW Section in WOLFSSL_INTEGRATION.md**: Section 11 added (1,800+ lines)
 
-**Purpose**: Embedded IDPS/firewall for ocserv-modern
+**Purpose**: Embedded IDPS/firewall for wolfguard
 
 **Key Features**:
 - **VPN Connection Rate Limiting**: Brute-force prevention (max 5/min per IP)
@@ -171,7 +171,7 @@ ocserv-modern development team now has **complete reverse engineering documentat
 
 **Architecture**:
 ```
-ocserv-modern VPN Server
+wolfguard VPN Server
   ├── Connection Handler ──> wolfSentry Engine
   │                           ├── Firewall Rules
   │                           ├── Rate Limiter
@@ -190,7 +190,7 @@ ocserv-modern VPN Server
 
 **Complete C23 Implementation**: Production-ready VPN connection handler with wolfSentry
 
-### Impact on ocserv-modern Development
+### Impact on wolfguard Development
 
 **Total New Documentation**: ~21,000 lines
 - DECOMPILATION_TOOLS.md: 8,500 lines
@@ -270,7 +270,7 @@ ocserv-modern VPN Server
 
 ## Executive Summary
 
-This analysis extracted **ALL critical implementation details** from Cisco Secure Client documentation to achieve 100% protocol compatibility in ocserv-modern (C23). The analysis covered:
+This analysis extracted **ALL critical implementation details** from Cisco Secure Client documentation to achieve 100% protocol compatibility in wolfguard (C23). The analysis covered:
 
 - **wolfSSL 5.8.2+ Integration** (DTLS 1.3 RFC 9147, FIPS 140-3)
 - **Version differences** (5.0 vs 5.1) with 88 new features
@@ -578,7 +578,7 @@ Network:         All traffic (ingress/egress)
 
 | Header | Version | Status | Implementation |
 |--------|---------|--------|----------------|
-| X-CSTP-Version | All | ✅ Complete | ocserv-modern v1.0 |
+| X-CSTP-Version | All | ✅ Complete | wolfguard v1.0 |
 | X-CSTP-MTU | All | ✅ Complete | Dynamic MTU discovery |
 | X-CSTP-Address | All | ✅ Complete | IPv4 assignment |
 | X-CSTP-Netmask | All | ✅ Complete | Subnet mask |
@@ -841,7 +841,7 @@ Example (DTLS):
 
 ```bash
 # Run all unit tests
-cd ocserv-modern/tests
+cd wolfguard/tests
 make check
 
 # Test specific components
@@ -891,7 +891,7 @@ This comprehensive analysis has documented **ALL critical Cisco Secure Client im
 ✅ **Complete protocol compatibility** (5.0 and 5.1)
 
 **Next Steps**:
-1. Integrate C23 code into ocserv-modern repository
+1. Integrate C23 code into wolfguard repository
 2. Implement unit and integration tests
 3. Validate against Cisco ASA/FTD (versions 9.x and 7.4.1+)
 4. Performance benchmarking
