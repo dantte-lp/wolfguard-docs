@@ -1,0 +1,11 @@
+{
+  "label": "💻 Developer Guide",
+  "position": 4,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Developer Guide",
+    "description": "Comprehensive developer documentation including architecture, API reference, code examples, protocol implementation, integration guides, and testing.",
+    "keywords": ["developer", "api", "architecture", "protocol", "integration", "code examples"]
+  }
+}

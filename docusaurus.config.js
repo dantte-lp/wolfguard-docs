@@ -52,38 +52,16 @@ const config = {
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           remarkPlugins: [
-            [
-              require('remark-kroki').remarkKroki,
-              {
-                // Kroki server URL (internal docker network)
-                server: process.env.KROKI_SERVER_URL || 'http://kroki:8000',
-                // Output format (supported: img-base64, object-base64, img-html-base64, inline-svg)
-                output: 'inline-svg',
-                // Supported diagram types
-                types: [
-                  'plantuml',
-                  'mermaid',
-                  'graphviz',
-                  'dot',
-                  'ditaa',
-                  'blockdiag',
-                  'seqdiag',
-                  'actdiag',
-                  'nwdiag',
-                  'packetdiag',
-                  'rackdiag',
-                  'c4plantuml',
-                  'bpmn',
-                  'excalidraw',
-                  'pikchr',
-                  'structurizr',
-                  'vega',
-                  'vegalite',
-                  'wavedrom',
-                  'erd',
-                ],
-              },
-            ],
+            // Temporarily disabled Kroki plugin due to MDX compilation issues
+            // Will re-enable after debugging build issues
+            // [
+            //   require('remark-kroki').remarkKroki,
+            //   {
+            //     server: process.env.KROKI_SERVER_URL || 'http://kroki:8000',
+            //     output: 'img-base64',
+            //     types: ['plantuml', 'mermaid', 'graphviz', 'dot', 'ditaa', 'blockdiag', 'seqdiag', 'actdiag', 'nwdiag', 'packetdiag', 'rackdiag', 'c4plantuml', 'bpmn', 'excalidraw', 'pikchr', 'structurizr', 'vega', 'vegalite', 'wavedrom', 'erd'],
+            //   },
+            // ],
           ],
         },
         blog: false,
@@ -120,9 +98,9 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'OC Protocol Docs',
+        title: 'WolfGuard Docs',
         logo: {
-          alt: 'OpenConnect Logo',
+          alt: 'WolfGuard Logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -130,54 +108,84 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'docsSidebar',
             position: 'left',
-            label: 'Docs',
+            label: 'Documentation',
           },
           {
             type: 'dropdown',
-            label: 'Protocol',
+            label: 'User Guides',
             position: 'left',
             items: [
+              {
+                to: '/docs/getting-started/',
+                label: '📘 Getting Started',
+              },
+              {
+                to: '/docs/administration/',
+                label: '🔧 Administration',
+              },
+              {
+                to: '/docs/devops/',
+                label: '🚀 DevOps',
+              },
+              {
+                to: '/docs/developers/',
+                label: '💻 Developers',
+              },
+              {
+                to: '/docs/networking/',
+                label: '🌐 Network Engineering',
+              },
+            ],
+          },
+          {
+            type: 'dropdown',
+            label: 'Quick Links',
+            position: 'left',
+            items: [
+              {
+                to: '/docs/getting-started/quick-start',
+                label: 'Quick Start Guide',
+              },
+              {
+                to: '/docs/administration/deployment/server-setup',
+                label: 'Server Setup',
+              },
+              {
+                to: '/docs/devops/containers/docker',
+                label: 'Docker Deployment',
+              },
+              {
+                to: '/docs/developers/api/rest-api',
+                label: 'API Reference',
+              },
+              {
+                to: '/docs/networking/troubleshooting/common-problems',
+                label: 'Troubleshooting',
+              },
+            ],
+          },
+          {
+            type: 'dropdown',
+            label: 'Reference',
+            position: 'left',
+            items: [
+              {
+                to: '/docs/cisco-secure-client/',
+                label: 'Cisco Client Analysis',
+              },
               {
                 to: '/docs/openconnect-protocol/intro',
-                label: '📡 OpenConnect Protocol',
+                label: 'OpenConnect Protocol',
               },
               {
-                to: '/docs/openconnect-protocol/protocol/crypto',
-                label: 'Cryptography',
+                to: '/docs/reference/glossary',
+                label: 'Glossary',
               },
               {
-                to: '/docs/openconnect-protocol/analysis/decompilation',
-                label: 'Reverse Engineering',
-              },
-              {
-                to: '/docs/openconnect-protocol/reference/rfc-draft',
-                label: 'RFC Draft',
+                to: '/docs/reference/configuration-reference',
+                label: 'Configuration Reference',
               },
             ],
-          },
-          {
-            type: 'dropdown',
-            label: 'Implementations',
-            position: 'left',
-            items: [
-              {
-                to: '/docs/ocserv-vanilla/intro',
-                label: '🔧 ocserv (Vanilla)',
-              },
-              {
-                to: '/docs/wolfguard/intro',
-                label: '🚀 wolfguard',
-              },
-              {
-                to: '/docs/wolfguard/getting-started/quick-start',
-                label: 'Quick Start',
-              },
-            ],
-          },
-          {
-            to: '/docs/guides/diagrams',
-            label: 'Guides',
-            position: 'left',
           },
           {
             to: '/docs/releases/',

@@ -1,0 +1,11 @@
+{
+  "label": "📚 Reference",
+  "position": 6,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Reference Documentation",
+    "description": "Technical reference documentation including Cisco Secure Client analysis, OpenConnect protocol specifications, ocserv documentation, glossary, and configuration reference.",
+    "keywords": ["reference", "cisco", "protocol", "specifications", "glossary"]
+  }
+}

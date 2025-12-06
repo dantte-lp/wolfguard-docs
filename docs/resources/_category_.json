@@ -1,0 +1,11 @@
+{
+  "label": "📋 Resources",
+  "position": 7,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Resources",
+    "description": "Additional resources including release notes, diagrams, contributing guidelines, support information, and security policies.",
+    "keywords": ["resources", "releases", "contributing", "support", "security"]
+  }
+}

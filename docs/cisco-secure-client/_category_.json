@@ -1,0 +1,8 @@
+{
+  "label": "Cisco Secure Client",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Comprehensive reverse engineering analysis of Cisco Secure Client (formerly AnyConnect) for protocol interoperability and security research."
+  }
+}

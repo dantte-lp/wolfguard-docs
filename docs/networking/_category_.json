@@ -1,0 +1,11 @@
+{
+  "label": "🌐 Network Engineering",
+  "position": 5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Network Engineering Guide",
+    "description": "Network engineering guides covering OpenConnect protocol deep dive, network topology, firewall configuration, routing, DNS, performance tuning, and troubleshooting.",
+    "keywords": ["networking", "protocol", "firewall", "routing", "dns", "troubleshooting", "performance"]
+  }
+}

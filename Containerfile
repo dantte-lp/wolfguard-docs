@@ -1,42 +1,50 @@
+# syntax=docker/dockerfile:1.12
 # ═══════════════════════════════════════════════════════════════════
 # Multi-stage Build for OpenConnect Protocol Documentation
+# Compose Specification 2025 compliant
 # ═══════════════════════════════════════════════════════════════════
 
 # Build arguments для OCI labels
 ARG BUILD_DATE
 ARG VERSION=1.0.0
 ARG VCS_REF
-ARG VCS_URL=https://github.com/dantte-lp/cisco-secure-client-docs
+ARG VCS_URL=https://github.com/dantte-lp/wolfguard-docs
 
 # ═══════════════════════════════════════════════════════════════════
 # Stage 1: Build Docusaurus Static Site
 # ═══════════════════════════════════════════════════════════════════
-FROM docker.io/library/node:22-trixie-slim AS builder
+FROM docker.io/library/node:lts-trixie AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json ./
+# Install build dependencies for native modules (sharp)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-# Note: Using npm install (not npm ci) since package-lock.json is not committed
-# - --prefer-offline: Use cache when possible
-# - --no-audit: Skip audit for faster builds
-# - --production: Production dependencies only
-RUN npm install --production --prefer-offline --no-audit \
-    && npm cache clean --force
+# Enable pnpm via corepack
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies and rebuild native modules (sharp)
+RUN pnpm install --frozen-lockfile || pnpm install
+RUN cd node_modules/.pnpm/sharp@*/node_modules/sharp && npm run install 2>/dev/null || pnpm rebuild sharp
 
 # Copy source files
 COPY . .
 
 # Build static site
-RUN npm run build
+RUN pnpm run build
 
 # ═══════════════════════════════════════════════════════════════════
-# Stage 2: Production Nginx Server
+# Stage 2: Production Nginx Server (minimal image)
 # ═══════════════════════════════════════════════════════════════════
-FROM docker.io/nginx:1.29-trixie-perl
+FROM docker.io/library/nginx:stable-perl
 
 # Install curl for healthcheck (more universal than wget in Debian)
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
@@ -65,16 +73,16 @@ RUN chown -R nginx:nginx /var/cache/nginx \
 
 # OCI Standard Labels
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.authors="Your Organization" \
+      org.opencontainers.image.authors="WolfGuard Team" \
       org.opencontainers.image.url="https://docs.wolfguard.io" \
       org.opencontainers.image.documentation="https://docs.wolfguard.io/docs" \
       org.opencontainers.image.source="${VCS_URL}" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.vendor="OpenConnect Protocol Documentation" \
-      org.opencontainers.image.title="OpenConnect Protocol Documentation" \
-      org.opencontainers.image.description="Cisco Secure Client 5.x+ Reverse Engineering Documentation (Docusaurus 3 + Nginx 1.29)" \
-      org.opencontainers.image.base.name="docker.io/nginx:1.29-trixie-perl"
+      org.opencontainers.image.vendor="WolfGuard" \
+      org.opencontainers.image.title="WolfGuard Documentation" \
+      org.opencontainers.image.description="WolfGuard VPN Server Documentation (Docusaurus 3 + Nginx)" \
+      org.opencontainers.image.base.name="docker.io/library/nginx:stable-perl"
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

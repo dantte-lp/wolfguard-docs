@@ -1,0 +1,11 @@
+{
+  "label": "🔧 Administration",
+  "position": 2,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Administration Guide",
+    "description": "Complete administration guide for organization administrators. Covers deployment, user management, security, compliance, monitoring, and troubleshooting.",
+    "keywords": ["administration", "deployment", "user management", "security", "monitoring"]
+  }
+}

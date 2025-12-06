@@ -74,13 +74,19 @@ services:
   # Documentation Website (Docusaurus + Nginx)
   # ═══════════════════════════════════════════════════════════════════
   app:
+    image: ghcr.io/dantte-lp/wolfguard-docs:latest
+
     build:
       context: .
       dockerfile: Containerfile
       args:
-        BUILD_DATE: "${BUILD_DATE:-2025-10-29T00:00:00Z}"
+        BUILD_DATE: "${BUILD_DATE:-2025-12-06T00:00:00Z}"
         VERSION: "${VERSION:-1.0.0}"
         VCS_REF: "${VCS_REF:-HEAD}"
+      tags:
+        - ghcr.io/dantte-lp/wolfguard-docs:latest
+        - ghcr.io/dantte-lp/wolfguard-docs:${VERSION:-1.0.0}
+        - localhost/wolfguard-docs:latest
 
     container_name: wolfguard-docs
     restart: unless-stopped
@@ -134,7 +140,8 @@ services:
       traefik.http.routers.wolfguard-docs.entrypoints: "https"
       traefik.http.routers.wolfguard-docs.rule: "Host(`docs.wolfguard.io`)"
       traefik.http.routers.wolfguard-docs.tls: "true"
-      traefik.http.routers.wolfguard-docs.tls.certresolver: "cloudflare"
+      # Certificate automatically selected by SNI from tls.yml
+
 
       # Применить middleware chain из Traefik dynamic.yml
       traefik.http.routers.wolfguard-docs.middlewares: "web-standard@file"

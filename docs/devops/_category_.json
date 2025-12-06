@@ -1,0 +1,11 @@
+{
+  "label": "🚀 DevOps",
+  "position": 3,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "DevOps Guide",
+    "description": "DevOps and infrastructure automation guides. Covers containerization, Kubernetes, CI/CD, infrastructure as code, high availability, and observability.",
+    "keywords": ["devops", "docker", "kubernetes", "podman", "cicd", "automation", "infrastructure"]
+  }
+}
