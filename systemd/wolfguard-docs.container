@@ -1,0 +1,102 @@
+# ═══════════════════════════════════════════════════════════════════
+# Podman Quadlet Container Unit for WolfGuard Documentation (App)
+# System-level service (NOT --user mode)
+# ═══════════════════════════════════════════════════════════════════
+# Installation:
+#   sudo mkdir -p /etc/containers/systemd
+#   sudo cp systemd/wolfguard-docs.container /etc/containers/systemd/
+#   sudo cp systemd/wolfguard-kroki.container /etc/containers/systemd/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now wolfguard-docs.service
+#
+# Management:
+#   sudo systemctl status wolfguard-docs.service
+#   sudo systemctl restart wolfguard-docs.service
+#   sudo journalctl -u wolfguard-docs.service -f
+#
+# Build image first:
+#   cd /opt/projects/repositories/wolfguard-docs
+#   task build  # or make build
+# ═══════════════════════════════════════════════════════════════════
+
+[Unit]
+Description=WolfGuard Documentation (Docusaurus + Nginx)
+Documentation=https://docs.wolfguard.io
+After=network-online.target wolfguard-kroki.service
+Wants=network-online.target
+Requires=wolfguard-kroki.service
+
+# Ensure Traefik network exists
+After=traefik.service
+Wants=traefik.service
+
+[Container]
+# Container name
+ContainerName=wolfguard-docs
+
+# Image to use (build with: task build or make build)
+Image=localhost/wolfguard-docs_app:latest
+
+# Networks - connect to both traefik-public and internal
+Network=traefik-public
+Network=wolfguard-docs-internal
+
+# Security options
+SecurityLabelDisable=false
+NoNewPrivileges=true
+DropCapability=ALL
+AddCapability=SETUID
+AddCapability=SETGID
+AddCapability=CHOWN
+AddCapability=DAC_OVERRIDE
+
+# Resource limits (via PodmanArgs as Memory key is not supported in Podman 5.x quadlet)
+PodmanArgs=--memory=128M
+
+# Logging
+LogDriver=k8s-file
+
+# Labels for Traefik integration
+Label=traefik.enable=true
+Label=traefik.docker.network=traefik-public
+
+# HTTPS Router
+Label=traefik.http.routers.wolfguard-docs.entrypoints=https
+Label=traefik.http.routers.wolfguard-docs.rule=Host(`docs.wolfguard.io`)
+Label=traefik.http.routers.wolfguard-docs.tls=true
+Label=traefik.http.routers.wolfguard-docs.middlewares=web-standard@file
+
+# Service Configuration
+Label=traefik.http.services.wolfguard-docs.loadbalancer.server.port=8080
+Label=traefik.http.services.wolfguard-docs.loadbalancer.server.scheme=http
+Label=traefik.http.services.wolfguard-docs.loadbalancer.healthcheck.path=/
+Label=traefik.http.services.wolfguard-docs.loadbalancer.healthcheck.interval=30s
+Label=traefik.http.services.wolfguard-docs.loadbalancer.healthcheck.timeout=5s
+
+# OCI Labels
+Label=org.opencontainers.image.vendor=WolfGuard Documentation
+Label=org.opencontainers.image.source=https://github.com/dantte-lp/wolfguard-docs
+Label=org.opencontainers.image.url=https://docs.wolfguard.io
+Label=org.opencontainers.image.title=OpenConnect Protocol Documentation
+Label=org.opencontainers.image.description=Static documentation site (Docusaurus 3 + Nginx + Kroki)
+Label=com.ocproto.environment=production
+Label=com.ocproto.service=documentation
+
+# Health check
+HealthCmd=curl -f http://localhost:8080/ || exit 1
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=10s
+
+[Service]
+# Restart policy
+Restart=always
+RestartSec=10s
+
+# Timeout settings
+TimeoutStartSec=120
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target

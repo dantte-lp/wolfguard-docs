@@ -1,0 +1,625 @@
+# ===================================================================
+# Taskfile for WolfGuard Documentation (Docusaurus)
+# Modern DevOps Workflow - 2025
+# ===================================================================
+# Replaces: Makefile
+# Tool: https://taskfile.dev
+# Install: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+#
+# Quick Start:
+#   task                    # Show all available tasks
+#   task install            # Install dependencies
+#   task dev                # Start development server
+#   task deploy             # Build and deploy production
+#
+# Migration from Make:
+#   make help       →  task --list
+#   make install    →  task install
+#   make dev        →  task dev
+#   make deploy     →  task deploy
+#   make clean      →  task clean
+# ===================================================================
+
+version: '3'
+
+# ===================================================================
+# Variables
+# ===================================================================
+vars:
+  PROJECT_NAME: wolfguard-docs
+  COMPOSE_FILE: compose.yaml
+  COMPOSE: podman-compose -f {{.COMPOSE_FILE}}
+  VERSION:
+    sh: echo "${VERSION:-1.0.0}"
+  BUILD_DATE:
+    sh: date -u +"%Y-%m-%dT%H:%M:%SZ"
+  VCS_REF:
+    sh: git rev-parse --short HEAD 2>/dev/null || echo "unknown"
+  CONTAINER_NAME: wolfguard-docs
+  KROKI_CONTAINER: wolfguard-kroki
+
+# ===================================================================
+# Environment Variables
+# ===================================================================
+env:
+  VERSION: '{{.VERSION}}'
+  BUILD_DATE: '{{.BUILD_DATE}}'
+  VCS_REF: '{{.VCS_REF}}'
+
+# ===================================================================
+# Task Configuration
+# ===================================================================
+silent: false
+set: [errexit, pipefail]
+
+# ===================================================================
+# Default Task
+# ===================================================================
+tasks:
+  default:
+    desc: "Show all available tasks"
+    summary: |
+      WolfGuard Documentation - Available Commands
+
+      Development:
+        install      - Install Node.js dependencies
+        dev          - Start development server (with Kroki)
+        dev-full     - Start both app and Kroki containers
+
+      Build & Deploy:
+        build        - Build container image
+        deploy       - Build and deploy production containers
+        start        - Start production containers
+        stop         - Stop all containers
+        restart      - Restart containers
+
+      Testing:
+        test         - Run all tests
+        test-kroki   - Test Kroki diagram generation
+        health       - Check container health
+
+      Maintenance:
+        clean        - Clean build artifacts and containers
+        update       - Pull changes and redeploy
+        logs         - View container logs
+
+      Use 'task <command>' to run a task.
+      Use 'task --list-all' to see all tasks including internal ones.
+    cmds:
+      - task --list
+
+  # ===================================================================
+  # Local Development Tasks
+  # ===================================================================
+
+  install:
+    desc: "Install Node.js dependencies"
+    summary: |
+      Installs all required npm packages for Docusaurus development.
+      This includes Docusaurus core, plugins, and the Kroki diagram plugin.
+    cmds:
+      - echo "Installing dependencies..."
+      - npm install
+      - echo "[OK] Dependencies installed successfully!"
+
+  dev:
+    desc: "Start development server (localhost:3000)"
+    summary: |
+      Starts the Docusaurus development server with hot-reload.
+
+      Prerequisites:
+        - Dependencies installed (run 'task install' first)
+        - Kroki service running (run 'task start-kroki' first)
+
+      Access the documentation at: http://localhost:3000
+
+      Note: Kroki must be running for diagram rendering.
+      Use 'task dev-full' to start everything at once.
+    deps:
+      - task: check-kroki
+    cmds:
+      - echo "Starting development server..."
+      - 'echo "Access at http://localhost:3000"'
+      - npm start
+
+  dev-full:
+    desc: "Start development environment (Kroki + Dev server)"
+    summary: |
+      Starts both Kroki service and Docusaurus dev server.
+      This is a complete development environment setup.
+    deps:
+      - task: start-kroki
+    cmds:
+      - echo "Waiting for Kroki to be healthy..."
+      - sleep 3
+      - task: dev
+
+  check-kroki:
+    desc: "Check if Kroki is running"
+    internal: true
+    preconditions:
+      - sh: podman ps | grep -q {{.KROKI_CONTAINER}}
+        msg: "Kroki not running! Start it with: task start-kroki"
+    cmds:
+      - echo "[OK] Kroki is running"
+
+  build-local:
+    desc: "Build static site locally"
+    summary: |
+      Builds the static documentation site without containers.
+      Output directory: build/
+    cmds:
+      - echo "Building static site..."
+      - npm run build
+      - 'echo "[OK] Build complete! Static files in: build/"'
+
+  serve-local:
+    desc: "Serve built site locally"
+    summary: |
+      Serves the previously built static site.
+      Requires running 'task build-local' first.
+    cmds:
+      - echo "Serving built site..."
+      - npm run serve
+
+  # ===================================================================
+  # Container Build Tasks
+  # ===================================================================
+
+  build:
+    desc: "Build container image"
+    summary: |
+      Builds the production container image using podman-compose.
+
+      Image includes:
+        - Docusaurus static build
+        - Nginx web server
+        - OCI labels for metadata
+
+      Build arguments:
+        VERSION={{.VERSION}}
+        BUILD_DATE={{.BUILD_DATE}}
+        VCS_REF={{.VCS_REF}}
+    cmds:
+      - echo "Building container image..."
+      - echo "Version={{.VERSION}} | Build Date={{.BUILD_DATE}} | VCS Ref={{.VCS_REF}}"
+      - |
+        {{.COMPOSE}} build \
+          --build-arg BUILD_DATE={{.BUILD_DATE}} \
+          --build-arg VERSION={{.VERSION}} \
+          --build-arg VCS_REF={{.VCS_REF}} \
+          app
+      - echo "[OK] Image built successfully!"
+      - podman images {{.CONTAINER_NAME}}_app:latest
+
+  build-buildah:
+    desc: "Build with buildah (alternative method)"
+    summary: |
+      Builds the container using buildah directly instead of compose.
+      Useful for advanced build scenarios or CI/CD pipelines.
+    cmds:
+      - echo "Building with buildah..."
+      - |
+        buildah bud -t ocproto-docs:latest \
+          --build-arg BUILD_DATE={{.BUILD_DATE}} \
+          --build-arg VERSION={{.VERSION}} \
+          --build-arg VCS_REF={{.VCS_REF}} \
+          -f Containerfile .
+      - echo "[OK] Image built with buildah!"
+
+  inspect-labels:
+    desc: "Inspect OCI labels of built image"
+    summary: |
+      Shows all OCI labels embedded in the container image.
+      Useful for verifying build metadata and compliance.
+    cmds:
+      - 'echo "OCI Labels:"'
+      - podman inspect ocproto-docs:latest --format '{{json .Labels}}' | python3 -m json.tool || echo "Image not found. Run 'task build' first."
+
+  # ===================================================================
+  # Compose Management Tasks
+  # ===================================================================
+
+  validate:
+    desc: "Validate compose.yaml syntax"
+    summary: |
+      Validates the compose file syntax and configuration.
+      Checks for errors before deployment.
+    cmds:
+      - echo "Validating compose.yaml..."
+      - "{{.COMPOSE}} config --quiet && echo '[OK] Syntax valid' || (echo '[ERROR] Syntax error' && exit 1)"
+
+  compose-config:
+    desc: "Show resolved compose configuration"
+    summary: |
+      Displays the fully resolved compose configuration
+      with all variables and anchors expanded.
+    cmds:
+      - 'echo "Resolved compose configuration:"'
+      - "{{.COMPOSE}} config"
+
+  start:
+    desc: "Start all containers"
+    summary: |
+      Starts all services defined in compose.yaml in detached mode.
+
+      Services started:
+        - app (Nginx + Docusaurus)
+        - kroki (Diagram service)
+
+      Access:
+        - Production: https://docs.wolfguard.io
+        - Kroki: http://localhost:8000
+    cmds:
+      - echo "Starting containers..."
+      - "{{.COMPOSE}} up -d"
+      - echo "[OK] Containers started!"
+      - 'echo "Production URL: https://docs.wolfguard.io"'
+      - 'echo "Kroki Local: http://localhost:8000"'
+      - sleep 2
+      - task: ps
+
+  start-kroki:
+    desc: "Start only Kroki service (for development)"
+    summary: |
+      Starts only the Kroki diagram service.
+      Useful for local development with npm.
+
+      Access Kroki at: http://localhost:8000
+    cmds:
+      - echo "Starting Kroki service..."
+      - "{{.COMPOSE}} up -d kroki"
+      - echo "[OK] Kroki started!"
+      - 'echo "Kroki available at: http://localhost:8000"'
+      - sleep 2
+      - task: health-kroki
+
+  stop:
+    desc: "Stop all containers"
+    summary: |
+      Stops and removes all running containers.
+      Preserves volumes and networks.
+    cmds:
+      - echo "Stopping containers..."
+      - "{{.COMPOSE}} down"
+      - echo "[OK] Containers stopped!"
+
+  stop-kroki:
+    desc: "Stop only Kroki service"
+    cmds:
+      - echo "Stopping Kroki service..."
+      - "{{.COMPOSE}} stop kroki"
+      - echo "[OK] Kroki stopped!"
+
+  restart:
+    desc: "Restart all containers"
+    summary: |
+      Performs a clean restart of all services.
+      Equivalent to: stop → start
+    deps:
+      - task: stop
+      - task: start
+
+  logs:
+    desc: "View all container logs (follow mode)"
+    summary: |
+      Tails logs from all containers.
+      Press Ctrl+C to exit.
+    cmds:
+      - "{{.COMPOSE}} logs -f"
+
+  logs-app:
+    desc: "View app (nginx) logs only"
+    cmds:
+      - "{{.COMPOSE}} logs -f app"
+
+  logs-kroki:
+    desc: "View Kroki logs only"
+    cmds:
+      - "{{.COMPOSE}} logs -f kroki"
+
+  ps:
+    desc: "Show running containers"
+    cmds:
+      - 'echo "Running containers:"'
+      - "{{.COMPOSE}} ps"
+
+  # ===================================================================
+  # Health Check Tasks
+  # ===================================================================
+
+  health:
+    desc: "Check all container health"
+    summary: |
+      Performs comprehensive health checks:
+        - Container status
+        - HTTPS accessibility
+        - Kroki API health
+    cmds:
+      - 'echo "Container Health Status:"'
+      - echo ""
+      - 'echo "App (nginx) status:"'
+      - podman inspect {{.CONTAINER_NAME}} --format='{{.State.Status}}' 2>/dev/null || echo "Container not running"
+      - echo ""
+      - 'echo "Kroki status:"'
+      - podman inspect {{.KROKI_CONTAINER}} --format='{{.State.Status}}' 2>/dev/null || echo "Container not running"
+      - echo ""
+      - 'echo "Testing HTTPS access:"'
+      - curl -s -o /dev/null -w "HTTP Status=%{http_code}\n" https://docs.wolfguard.io || echo "Failed to connect"
+
+  health-kroki:
+    desc: "Check Kroki health endpoint"
+    cmds:
+      - echo "Checking Kroki health..."
+      - curl -s http://localhost:8000/health && echo "[OK] Kroki healthy" || echo "[ERROR] Kroki not responding"
+
+  test-kroki:
+    desc: "Test Kroki diagram generation"
+    summary: |
+      Tests Kroki's diagram generation capabilities:
+        - PlantUML test
+        - Mermaid test
+
+      Output files saved to /tmp/
+    cmds:
+      - echo "Testing Kroki diagram generation..."
+      - echo ""
+      - 'echo "1. PlantUML test:"'
+      - |
+        curl -X POST http://localhost:8000/plantuml/svg \
+          -H "Content-Type: text/plain" \
+          -d '@startuml
+        Alice -> Bob: Hello
+        @enduml' \
+          --max-time 5 -s -o /tmp/kroki-test-plantuml.svg \
+          && echo "[OK] PlantUML OK (saved to /tmp/kroki-test-plantuml.svg)" \
+          || echo "[ERROR] PlantUML failed"
+      - echo ""
+      - 'echo "2. Mermaid test:"'
+      - |
+        curl -X POST http://localhost:8000/mermaid/svg \
+          -H "Content-Type: text/plain" \
+          -d 'graph TD
+        A-->B' \
+          --max-time 5 -s -o /tmp/kroki-test-mermaid.svg \
+          && echo "[OK] Mermaid OK (saved to /tmp/kroki-test-mermaid.svg)" \
+          || echo "[ERROR] Mermaid failed"
+
+  # ===================================================================
+  # Deployment Tasks
+  # ===================================================================
+
+  deploy:
+    desc: "Build and deploy containers"
+    summary: |
+      Complete deployment workflow:
+        1. Build container image
+        2. Start all services
+        3. Verify health
+
+      This is the primary deployment command for production.
+    deps:
+      - task: build
+      - task: start
+    cmds:
+      - echo "[OK] Deployment complete!"
+      - 'echo "Site available at: https://docs.wolfguard.io"'
+      - 'echo "Traefik dashboard: https://tr-01.infra4.dev"'
+      - 'echo "Kroki local: http://localhost:8000"'
+      - sleep 3
+      - task: health
+
+  update:
+    desc: "Pull latest changes, rebuild, and redeploy"
+    summary: |
+      Complete update workflow for production:
+        1. Git pull latest changes
+        2. Run migration script (if exists)
+        3. Rebuild and deploy
+
+      Use this for deploying updates from repository.
+    cmds:
+      - echo "Updating documentation site..."
+      - git pull
+      - test -f ./migrate-docs.sh && ./migrate-docs.sh || echo "No migration script found"
+      - task: deploy
+      - echo "[OK] Update complete!"
+
+  # ===================================================================
+  # Maintenance Tasks
+  # ===================================================================
+
+  clean:
+    desc: "Remove build artifacts and containers"
+    summary: |
+      Comprehensive cleanup:
+        - Remove build directories
+        - Stop and remove containers
+        - Remove container images
+        - Clean node_modules
+
+      WARNING: This removes ALL project artifacts!
+    cmds:
+      - echo "Cleaning up..."
+      - rm -rf build .docusaurus node_modules
+      - "{{.COMPOSE}} down -v 2>/dev/null || true"
+      - podman rmi ocproto-docs:latest 2>/dev/null || true
+      - echo "[OK] Cleanup complete!"
+
+  migrate:
+    desc: "Re-run documentation migration script"
+    summary: |
+      Executes the documentation migration script if it exists.
+      Used for transforming or updating documentation files.
+    preconditions:
+      - sh: test -f ./migrate-docs.sh
+        msg: "migrate-docs.sh not found"
+    cmds:
+      - echo "Migrating documentation files..."
+      - ./migrate-docs.sh
+      - echo "[OK] Migration complete!"
+
+  shell:
+    desc: "Open shell in running app container"
+    summary: |
+      Opens an interactive shell in the app container.
+      Useful for debugging and inspection.
+    cmds:
+      - echo "Opening shell in app container..."
+      - podman exec -it {{.CONTAINER_NAME}} sh
+
+  shell-kroki:
+    desc: "Open shell in running Kroki container"
+    cmds:
+      - echo "Opening shell in Kroki container..."
+      - podman exec -it {{.KROKI_CONTAINER}} sh
+
+  inspect:
+    desc: "Inspect app container configuration"
+    cmds:
+      - 'echo "App container configuration:"'
+      - podman inspect {{.CONTAINER_NAME}} | python3 -m json.tool | less
+
+  inspect-kroki:
+    desc: "Inspect Kroki container configuration"
+    cmds:
+      - 'echo "Kroki container configuration:"'
+      - podman inspect {{.KROKI_CONTAINER}} | python3 -m json.tool | less
+
+  # ===================================================================
+  # Traefik Integration Tasks
+  # ===================================================================
+
+  traefik-status:
+    desc: "Check Traefik router status"
+    summary: |
+      Queries Traefik API to check router configuration
+      for this service.
+    cmds:
+      - echo "Checking Traefik router status..."
+      - curl -s https://tr-01.infra4.dev/api/http/routers | python3 -m json.tool | grep -A 10 "wolfguard-docs" || echo "Router not found"
+
+  # ===================================================================
+  # Testing Tasks
+  # ===================================================================
+
+  test:
+    desc: "Run all tests"
+    summary: |
+      Comprehensive test suite:
+        - Container status checks
+        - HTTPS accessibility
+        - Kroki health verification
+
+      All tests must pass for deployment validation.
+    cmds:
+      - echo "Running tests..."
+      - echo ""
+      - echo "1. Checking if app container is running..."
+      - podman ps | grep -q {{.CONTAINER_NAME}} && echo "[OK] App container running" || (echo "[ERROR] App container not running" && exit 1)
+      - echo ""
+      - echo "2. Checking if Kroki container is running..."
+      - podman ps | grep -q {{.KROKI_CONTAINER}} && echo "[OK] Kroki container running" || (echo "[ERROR] Kroki container not running" && exit 1)
+      - echo ""
+      - echo "3. Testing HTTPS access..."
+      - curl -s -f -o /dev/null https://docs.wolfguard.io && echo "[OK] Site accessible" || (echo "[ERROR] Site not accessible" && exit 1)
+      - echo ""
+      - echo "4. Testing Kroki health..."
+      - curl -s http://localhost:8000/health >/dev/null && echo "[OK] Kroki responding" || (echo "[ERROR] Kroki not responding" && exit 1)
+      - echo ""
+      - echo "[OK] All tests passed!"
+
+  # ===================================================================
+  # Security & Compliance Tasks
+  # ===================================================================
+
+  security-scan:
+    desc: "Scan image for vulnerabilities with grype"
+    summary: |
+      Performs security vulnerability scanning using Grype.
+
+      Install Grype: https://github.com/anchore/grype
+    cmds:
+      - echo "Scanning image for vulnerabilities..."
+      - |
+        command -v grype >/dev/null 2>&1 && grype ocproto-docs:latest || \
+          echo "grype not installed. Install: https://github.com/anchore/grype"
+
+  check-caps:
+    desc: "Check container capabilities"
+    summary: |
+      Displays effective capabilities for running containers.
+      Useful for security audits.
+    cmds:
+      - 'echo "App container capabilities:"'
+      - podman inspect {{.CONTAINER_NAME}} --format '{{json .EffectiveCaps}}' | python3 -m json.tool || echo "Container not running"
+      - echo ""
+      - 'echo "Kroki container capabilities:"'
+      - podman inspect {{.KROKI_CONTAINER}} --format '{{json .EffectiveCaps}}' | python3 -m json.tool || echo "Container not running"
+
+  check-resources:
+    desc: "Check resource usage"
+    summary: |
+      Shows real-time resource consumption for containers.
+    cmds:
+      - 'echo "Container resource usage:"'
+      - podman stats --no-stream {{.CONTAINER_NAME}} {{.KROKI_CONTAINER}} 2>/dev/null || echo "Containers not running"
+
+  # ===================================================================
+  # Information Tasks
+  # ===================================================================
+
+  info:
+    desc: "Show project information"
+    summary: |
+      Displays comprehensive project information including:
+        - URLs and endpoints
+        - Version information
+        - Technology stack
+    cmds:
+      - echo "======================================================="
+      - echo "  WolfGuard Documentation"
+      - echo "======================================================="
+      - echo ""
+      - 'echo "  Production URL:    https://docs.wolfguard.io"'
+      - 'echo "  Kroki Local:       http://localhost:8000"'
+      - 'echo "  Traefik Dashboard: https://tr-01.infra4.dev"'
+      - echo ""
+      - 'echo "  Version:           {{.VERSION}}"'
+      - 'echo "  Build Date:        {{.BUILD_DATE}}"'
+      - 'echo "  VCS Ref:           {{.VCS_REF}}"'
+      - echo ""
+      - 'echo "  Technology Stack:"'
+      - echo "    - Docusaurus 3.5.2"
+      - echo "    - Node.js 22 (Debian Trixie Slim)"
+      - echo "    - Nginx 1.29 (Debian Trixie Perl)"
+      - echo "    - Kroki 0.25.0 (Diagram Service)"
+      - echo "    - Podman + Compose Spec 2025"
+      - echo "    - Traefik (Global Reverse Proxy)"
+      - echo ""
+      - echo "======================================================="
+
+  quickstart:
+    desc: "Show quick start guide"
+    cmds:
+      - 'echo "Quick Start Guide:"'
+      - echo ""
+      - 'echo "1. Local Development:"'
+      - 'echo "   task install          # Install dependencies"'
+      - 'echo "   task start-kroki      # Start Kroki service"'
+      - 'echo "   task dev              # Start dev server"'
+      - echo ""
+      - 'echo "2. Production Deployment:"'
+      - 'echo "   task deploy           # Build and deploy"'
+      - 'echo "   task health           # Check health"'
+      - 'echo "   task logs             # View logs"'
+      - echo ""
+      - 'echo "3. Testing:"'
+      - 'echo "   task test             # Run all tests"'
+      - 'echo "   task test-kroki       # Test Kroki"'
+      - echo ""
+      - 'echo "4. Maintenance:"'
+      - 'echo "   task update           # Pull and redeploy"'
+      - 'echo "   task clean            # Clean everything"'
+      - echo ""
+      - 'echo "For full help: task --list"'

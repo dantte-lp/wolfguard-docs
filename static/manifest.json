@@ -1,0 +1,22 @@
+{
+  "name": "WolfGuard Documentation",
+  "short_name": "WolfGuard Docs",
+  "description": "Modern OpenConnect VPN Server - Cisco Secure Client 5.x+ Compatible",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2e8555",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/img/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["documentation", "reference", "education"],
+  "lang": "en",
+  "dir": "ltr"
+}

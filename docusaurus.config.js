@@ -79,17 +79,109 @@ const config = {
   ],
 
   plugins: [
-    // Local search plugin
+    // ═══════════════════════════════════════════════════════════════════
+    // Enhanced Local Search - @easyops-cn (Better UI than @cmfcmf)
+    // ═══════════════════════════════════════════════════════════════════
     [
-      require.resolve('@cmfcmf/docusaurus-search-local'),
+      require.resolve('@easyops-cn/docusaurus-search-local'),
       {
+        hashed: true,
         indexDocs: true,
         indexBlog: false,
         indexPages: true,
-        language: 'en',
-        maxSearchResults: 10,
+        language: ['en'],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+        searchResultLimits: 8,
+        searchBarShortcutHint: true,
+        searchBarPosition: 'right',
       },
     ],
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Image Optimization & Zoom
+    // ═══════════════════════════════════════════════════════════════════
+    // Ideal Image - Lazy loading, responsive images
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 85,
+        max: 2000,
+        min: 500,
+        steps: 4,
+        disableInDev: false,
+      },
+    ],
+    // Image Zoom - Click to zoom images
+    'plugin-image-zoom',
+
+    // ═══════════════════════════════════════════════════════════════════
+    // PWA Support - Offline capability, installable
+    // ═══════════════════════════════════════════════════════════════════
+    [
+      '@docusaurus/plugin-pwa',
+      {
+        debug: false,
+        offlineModeActivationStrategies: [
+          'appInstalled',
+          'standalone',
+          'queryString',
+        ],
+        pwaHead: [
+          {
+            tagName: 'link',
+            rel: 'icon',
+            href: '/img/logo.svg',
+          },
+          {
+            tagName: 'link',
+            rel: 'manifest',
+            href: '/manifest.json',
+          },
+          {
+            tagName: 'meta',
+            name: 'theme-color',
+            content: '#2e8555',
+          },
+          {
+            tagName: 'meta',
+            name: 'apple-mobile-web-app-capable',
+            content: 'yes',
+          },
+          {
+            tagName: 'meta',
+            name: 'apple-mobile-web-app-status-bar-style',
+            content: 'black',
+          },
+          {
+            tagName: 'link',
+            rel: 'apple-touch-icon',
+            href: '/img/logo.svg',
+          },
+        ],
+      },
+    ],
+
+    // ═══════════════════════════════════════════════════════════════════
+    // SASS/SCSS Support
+    // ═══════════════════════════════════════════════════════════════════
+    'docusaurus-plugin-sass',
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Privacy-Focused Analytics - Matomo (Self-hosted option)
+    // ═══════════════════════════════════════════════════════════════════
+    // Uncomment and configure when Matomo is set up
+    // [
+    //   'docusaurus-plugin-matomo',
+    //   {
+    //     siteId: '1',
+    //     matomoUrl: 'https://analytics.wolfguard.io/',
+    //     siteUrl: 'https://docs.wolfguard.io',
+    //     matomoPhpScript: 'matomo.php',
+    //     matomoJsScript: 'matomo.js',
+    //     dev: false, // Enable in development for testing
+    //   },
+    // ],
   ],
 
   themeConfig:
@@ -303,6 +395,15 @@ const config = {
         sidebar: {
           hideable: true,
           autoCollapseCategories: true,
+        },
+      },
+      // Image zoom configuration
+      imageZoom: {
+        selector: '.markdown img',
+        options: {
+          background: 'rgba(0, 0, 0, 0.9)',
+          margin: 48,
+          scrollOffset: 0,
         },
       },
       // Algolia search can be added later

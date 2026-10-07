@@ -1,0 +1,31 @@
+# ═══════════════════════════════════════════════════════════════════
+# Podman Quadlet Network Unit for WolfGuard Docs Internal Network
+# System-level service (NOT --user mode)
+# ═══════════════════════════════════════════════════════════════════
+# Installation:
+#   sudo cp systemd/wolfguard-docs-internal.network /etc/containers/systemd/
+#   sudo systemctl daemon-reload
+#
+# This creates the internal network for app ↔ kroki communication
+# ═══════════════════════════════════════════════════════════════════
+
+[Unit]
+Description=WolfGuard Documentation Internal Network (App ↔ Kroki)
+
+[Network]
+# Network name
+NetworkName=wolfguard-docs-internal
+
+# Driver
+Driver=bridge
+
+# Not isolated - Kroki needs internet for some diagram types
+Internal=false
+
+# Labels
+Label=com.ocproto.network.type=internal
+Label=com.ocproto.network.environment=production
+Label=com.ocproto.network.project=wolfguard-docs
+
+[Install]
+WantedBy=multi-user.target

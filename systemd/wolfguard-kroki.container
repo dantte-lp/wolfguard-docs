@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════════
+# Podman Quadlet Container Unit for Kroki Diagram Service
+# System-level service (NOT --user mode)
+# ═══════════════════════════════════════════════════════════════════
+# Installation:
+#   sudo mkdir -p /etc/containers/systemd
+#   sudo cp systemd/wolfguard-kroki.container /etc/containers/systemd/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now wolfguard-kroki.service
+#
+# Management:
+#   sudo systemctl status wolfguard-kroki.service
+#   sudo systemctl restart wolfguard-kroki.service
+#   sudo journalctl -u wolfguard-kroki.service -f
+# ═══════════════════════════════════════════════════════════════════
+
+[Unit]
+Description=Kroki Diagram Service (PlantUML, Mermaid, GraphViz)
+Documentation=https://kroki.io
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Container name
+ContainerName=wolfguard-kroki
+
+# Image from Docker Hub
+Image=docker.io/yuzutech/kroki:0.25.0
+
+# Pull policy
+Pull=missing
+
+# Network - internal only, plus localhost binding
+Network=wolfguard-docs-internal
+
+# Port binding - localhost only for security
+PublishPort=127.0.0.1:8000:8000
+
+# Security options
+SecurityLabelDisable=false
+NoNewPrivileges=true
+DropCapability=ALL
+
+# Resource limits (via PodmanArgs as Memory key is not supported in Podman 5.x quadlet)
+PodmanArgs=--memory=512M
+
+# Logging
+LogDriver=k8s-file
+
+# Environment variables
+Environment=KROKI_PORT=8000
+Environment=KROKI_SAFE_MODE=secure
+Environment=KROKI_MAX_URI_LENGTH=8000
+Environment=KROKI_PLANTUML_ENABLED=true
+Environment=KROKI_MERMAID_ENABLED=true
+Environment=KROKI_GRAPHVIZ_ENABLED=true
+Environment=KROKI_DITAA_ENABLED=true
+Environment=KROKI_BLOCKDIAG_ENABLED=true
+Environment=KROKI_BPMN_ENABLED=true
+Environment=KROKI_EXCALIDRAW_ENABLED=true
+
+# OCI Labels
+Label=org.opencontainers.image.vendor=WolfGuard Documentation
+Label=org.opencontainers.image.source=https://github.com/dantte-lp/wolfguard-docs
+Label=org.opencontainers.image.title=Kroki Diagram Service
+Label=org.opencontainers.image.description=Universal diagram service (PlantUML, Mermaid, GraphViz, etc.)
+Label=com.ocproto.environment=production
+Label=com.ocproto.service=kroki
+
+# Health check
+HealthCmd=curl -f http://localhost:8000/health || exit 1
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=30s
+
+[Service]
+# Restart policy
+Restart=always
+RestartSec=10s
+
+# Timeout settings
+TimeoutStartSec=180
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target
